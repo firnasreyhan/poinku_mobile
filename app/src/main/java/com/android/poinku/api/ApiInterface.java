@@ -1,11 +1,29 @@
 package com.android.poinku.api;
 
+import com.android.poinku.api.response.AturanResponse;
+import com.android.poinku.api.response.BaseResponse;
+import com.android.poinku.api.response.DataPoinResponse;
 import com.android.poinku.api.response.JenisResponse;
+import com.android.poinku.api.response.JenisTugasKhususResponse;
+import com.android.poinku.api.response.KriteriaResponse;
 import com.android.poinku.api.response.LingkupResponse;
+import com.android.poinku.api.response.MahasiswaResponse;
+import com.android.poinku.api.response.NilaiResponse;
 import com.android.poinku.api.response.PeranResponse;
+import com.android.poinku.api.response.PoinResponse;
+import com.android.poinku.api.response.TotalPoinResponse;
+import com.android.poinku.api.response.TugasKhususResponse;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 public interface ApiInterface {
     @GET("jenis")
@@ -16,6 +34,89 @@ public interface ApiInterface {
 
     @GET("peran")
     Call<PeranResponse> getPeran();
+
+    @FormUrlEncoded
+    @POST("TugasKhusus")
+    Call<TugasKhususResponse> postTugasKhusus(
+            @Field("nrp") String nrp,
+            @Field("jenis") String jenis,
+            @Field("lingkup") String lingkup,
+            @Field("peran") String peran,
+            @Field("judul") String judul,
+            @Field("tanggal") String tanggal
+    );
+
+    @FormUrlEncoded
+    @POST("TugasKhusus/konten")
+    Call<BaseResponse> postKonten(
+            @Field("id_tugas_khusus") String idTugasKhusus,
+            @Field("media") String media,
+            @Field("jenis") String jenis
+    );
+
+    @FormUrlEncoded
+    @POST("TugasKhusus/kegiatan")
+    Call<BaseResponse> postKegiatan(
+            @Field("id_tugas_khusus") String idTugasKhusus,
+            @Field("keterangan") String keterangan
+    );
+
+    @FormUrlEncoded
+    @POST("TugasKhusus/buktiKonten")
+    Call<BaseResponse> postBuktiKonten(
+            @Field("id_tugas_khusus") String idTugasKhusus,
+            @Field("bukti") String bukti
+    );
+
+    @Multipart
+    @POST("TugasKhusus/buktiKegiatan")
+    Call<BaseResponse> postBuktiKegiatan(
+            @Part("id_tugas_khusus") RequestBody idTugasKhusus,
+            @Part("nrp") RequestBody nrp,
+            @Part("nama_jenis") RequestBody namaJenis,
+            @Part MultipartBody.Part file
+    );
+
+    @GET("TugasKhusus/poin")
+    Call<DataPoinResponse> getDataPoin(
+            @Query("nrp") String nrp,
+            @Query("jenis") String jenis
+    );
+
+    @GET("TugasKhusus/totalPoin")
+    Call<TotalPoinResponse> getTotalPoin(
+            @Query("nrp") String nrp
+    );
+
+    @GET("Aturan/detail")
+    Call<AturanResponse> getAturan(
+            @Query("id") String id
+    );
+
+    @GET("Aturan/nilai")
+    Call<NilaiResponse> getNilai(
+            @Query("id") String id
+    );
+
+    @GET("Aturan/poin")
+    Call<PoinResponse> getPoin(
+            @Query("id") String id
+    );
+
+    @GET("Aturan/kriteria")
+    Call<KriteriaResponse> getKriteria(
+            @Query("id") String id
+    );
+
+    @GET("Mahasiswa")
+    Call<MahasiswaResponse> getMahasiswa(
+            @Query("nrp") String nrp
+    );
+
+    @GET("TugasKhusus/jenisTugasKhusus")
+    Call<JenisTugasKhususResponse> getJenisTugasKhusus(
+            @Query("nrp") String nrp
+    );
 
 //    @POST("user/login")
 //    @FormUrlEncoded

@@ -54,14 +54,20 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
 
     //lifecycle
-    implementation 'android.arch.lifecycle:viewmodel:1.1.1'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     //noinspection LifecycleAnnotationProcessorWithJava8
-    annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0'
 
     //shimmer
     implementation 'com.facebook.shimmer:shimmer:0.5.0@aar'
 
     //Image Picker Library for Android
     implementation 'com.github.dhaval2404:imagepicker:1.8'
+
+    //image compressor
+    implementation 'id.zelory:compressor:2.1.0'
+
+    //swiperefreshlayout
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 }

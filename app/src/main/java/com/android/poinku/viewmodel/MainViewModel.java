@@ -4,7 +4,10 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 
+import com.android.poinku.api.response.DataPoinResponse;
+import com.android.poinku.api.response.TotalPoinResponse;
 import com.android.poinku.repository.OnlineRepository;
 
 public class MainViewModel extends AndroidViewModel {
@@ -13,5 +16,18 @@ public class MainViewModel extends AndroidViewModel {
     public MainViewModel(@NonNull Application application) {
         super(application);
         onlineRepository = new OnlineRepository();
+    }
+
+    public MutableLiveData<DataPoinResponse> getDataPoin(String nrp, String jenis) {
+        return onlineRepository.getDataPoin(
+                nrp,
+                jenis
+        );
+    }
+
+    public MutableLiveData<TotalPoinResponse> getTotalPoin(String nrp) {
+        return onlineRepository.getTotalPoin(
+                nrp
+        );
     }
 }
