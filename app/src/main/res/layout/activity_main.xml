@@ -140,6 +140,7 @@
                             android:textColor="@android:color/black" />
 
                         <TextView
+                            android:id="@+id/textViewAturan"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/open_sans_bold"
@@ -167,6 +168,7 @@
                             android:textColor="@android:color/black" />
 
                         <TextView
+                            android:id="@+id/textViewStatusValidasi"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/open_sans_bold"
@@ -194,6 +196,7 @@
                             android:textColor="@android:color/black" />
 
                         <TextView
+                            android:id="@+id/textViewTanggalValidasi"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/open_sans_bold"
@@ -441,7 +444,6 @@
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:scaleY="2"
                                 android:progress="0"
-                                android:max="75"
                                 app:indicatorColor="@color/primary"
                                 app:trackColor="@color/background" />
 
@@ -450,13 +452,15 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/_75sdp"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_13sdp"
                         android:orientation="vertical"
+                        android:gravity="center"
                         android:background="@color/primary">
 
                         <TextView
+                            android:id="@+id/textViewNilai"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="E"

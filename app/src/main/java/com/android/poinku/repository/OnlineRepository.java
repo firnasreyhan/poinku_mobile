@@ -12,6 +12,7 @@ import com.android.poinku.api.response.DataPoinResponse;
 import com.android.poinku.api.response.JenisResponse;
 import com.android.poinku.api.response.JenisTugasKhususResponse;
 import com.android.poinku.api.response.KriteriaResponse;
+import com.android.poinku.api.response.KriteriaTugasKhususResponse;
 import com.android.poinku.api.response.LingkupResponse;
 import com.android.poinku.api.response.MahasiswaResponse;
 import com.android.poinku.api.response.NilaiResponse;
@@ -382,6 +383,28 @@ public class OnlineRepository {
             @Override
             public void onFailure(Call<JenisTugasKhususResponse> call, Throwable t) {
                 Log.e("getJenisTugasKhusus", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<KriteriaTugasKhususResponse> getKriteriaTugasKhusus(String nrp) {
+        MutableLiveData<KriteriaTugasKhususResponse> data = new MutableLiveData<>();
+        apiInterface.getKriteriaTugasKhusus(
+                nrp
+        ).enqueue(new Callback<KriteriaTugasKhususResponse>() {
+            @Override
+            public void onResponse(Call<KriteriaTugasKhususResponse> call, Response<KriteriaTugasKhususResponse> response) {
+                if (response.code() == 200) {
+                    data.postValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<KriteriaTugasKhususResponse> call, Throwable t) {
+                Log.e("getKriteriaTugasKhusus", t.getMessage());
                 data.postValue(null);
             }
         });

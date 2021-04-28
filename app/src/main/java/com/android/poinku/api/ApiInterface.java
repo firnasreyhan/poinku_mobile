@@ -6,6 +6,7 @@ import com.android.poinku.api.response.DataPoinResponse;
 import com.android.poinku.api.response.JenisResponse;
 import com.android.poinku.api.response.JenisTugasKhususResponse;
 import com.android.poinku.api.response.KriteriaResponse;
+import com.android.poinku.api.response.KriteriaTugasKhususResponse;
 import com.android.poinku.api.response.LingkupResponse;
 import com.android.poinku.api.response.MahasiswaResponse;
 import com.android.poinku.api.response.NilaiResponse;
@@ -88,6 +89,16 @@ public interface ApiInterface {
             @Query("nrp") String nrp
     );
 
+    @GET("TugasKhusus/jenisTugasKhusus")
+    Call<JenisTugasKhususResponse> getJenisTugasKhusus(
+            @Query("nrp") String nrp
+    );
+
+    @GET("TugasKhusus/kriteriaTugasKhusus")
+    Call<KriteriaTugasKhususResponse> getKriteriaTugasKhusus(
+            @Query("nrp") String nrp
+    );
+
     @GET("Aturan/detail")
     Call<AturanResponse> getAturan(
             @Query("id") String id
@@ -110,11 +121,6 @@ public interface ApiInterface {
 
     @GET("Mahasiswa")
     Call<MahasiswaResponse> getMahasiswa(
-            @Query("nrp") String nrp
-    );
-
-    @GET("TugasKhusus/jenisTugasKhusus")
-    Call<JenisTugasKhususResponse> getJenisTugasKhusus(
             @Query("nrp") String nrp
     );
 

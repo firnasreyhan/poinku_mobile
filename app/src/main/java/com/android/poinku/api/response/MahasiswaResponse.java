@@ -16,6 +16,12 @@ public class MahasiswaResponse extends BaseResponse {
         @SerializedName("ID_ATURAN")
         public String idAturan;
 
+        @SerializedName("TAHUN")
+        public String tahun;
+
+        @SerializedName("KETERANGAN")
+        public String keterangan;
+
         @SerializedName("PRODI")
         public String prodi;
 
