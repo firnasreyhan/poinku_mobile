@@ -28,6 +28,7 @@
                 android:layout_marginTop="@dimen/_20sdp">
 
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/shapeableImageViewProfil"
                     android:layout_width="@dimen/_28sdp"
                     android:layout_height="@dimen/_28sdp"
                     android:layout_marginLeft="@dimen/_13sdp"
@@ -69,10 +70,12 @@
                         android:textColor="@android:color/white"/>
 
                     <TextView
-                        android:id="@+id/textViewName"
+                        android:id="@+id/textViewNama"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Muhammad Reyhan"
+                        android:text="-"
+                        android:capitalize="words"
+                        android:inputType="textCapWords"
                         android:textSize="@dimen/_18sdp"
                         android:fontFamily="@font/open_sans_regular"
                         android:textColor="@android:color/white"/>
@@ -224,7 +227,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardViewCatat"
+                    android:id="@+id/materialCardViewCatat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -475,6 +478,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardViewRiwayat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_13sdp"

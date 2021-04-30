@@ -9,18 +9,26 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.android.poinku.R;
 import com.android.poinku.api.response.KriteriaResponse;
 import com.android.poinku.api.response.KriteriaTugasKhususResponse;
 import com.android.poinku.api.response.MahasiswaResponse;
 import com.android.poinku.api.response.NilaiResponse;
 import com.android.poinku.api.response.TotalPoinResponse;
 import com.android.poinku.databinding.ActivityMainBinding;
+import com.android.poinku.preference.AppPreference;
 import com.android.poinku.viewmodel.MainViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private MainViewModel viewModel;
+    private FirebaseUser firebaseUser;
+
     private int poin;
 
     @Override
@@ -30,23 +38,45 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        Picasso.get()
+                .load(firebaseUser.getPhotoUrl())
+                .into(binding.shapeableImageViewProfil);
+        for (int i = 0, x = 0; i < firebaseUser.getDisplayName().length(); i++) {
+            if (firebaseUser.getDisplayName().charAt(i) == ' ') {
+                x++;
+            }
+
+            if (x == 3) {
+                binding.textViewNama.setText(firebaseUser.getDisplayName().substring(10, i));
+                break;
+            } else if ((i + 1) == firebaseUser.getDisplayName().length() && (x == 0 || x == 1)) {
+                binding.textViewNama.setText(firebaseUser.getDisplayName());
+            }
+        }
 
         getMahasiswa();
         getTotalPoin();
 
-        Log.e("poin", String.valueOf(poin));
-
-        binding.cardViewCatat.setOnClickListener(new View.OnClickListener() {
+        binding.materialCardViewCatat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(v.getContext(), CatatActivity.class));
+            }
+        });
+
+        binding.materialCardViewRiwayat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(v.getContext(), DaftarTugasKhususActivity.class));
             }
         });
     }
 
     public void getMahasiswa() {
         viewModel.getMahasiswa(
-                "171111079"
+                AppPreference.getUser(this).nrp
         ).observe(this, new Observer<MahasiswaResponse>() {
             @Override
             public void onChanged(MahasiswaResponse mahasiswaResponse) {
@@ -65,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void getTotalPoin() {
         viewModel.getTotalPoin(
-                "171111079"
+                AppPreference.getUser(this).nrp
         ).observe(this, new Observer<TotalPoinResponse>() {
             @Override
             public void onChanged(TotalPoinResponse totalPoinResponse) {
@@ -90,33 +120,41 @@ public class MainActivity extends AppCompatActivity {
                 if (nilaiResponse != null) {
                     if (nilaiResponse.status) {
                         binding.linearProgressIndicatorPoin.setMax(Integer.parseInt(nilaiResponse.data.get(0).poinMinimal));
+                        List<NilaiResponse.DetailNilai> list = new ArrayList<>();
                         for (NilaiResponse.DetailNilai nilai : nilaiResponse.data) {
                             if (poin >= Integer.parseInt(nilai.poinMinimal)) {
-                                getKriteria(nilai.idNilai);
+                                list.add(nilai);
                             }
                         }
+                        setNilai(list, 0);
                     }
                 }
             }
         });
     }
 
-    public void getKriteria(String idNilai) {
+    public void setNilai(List<NilaiResponse.DetailNilai> list, int index) {
+        if (index < list.size()) {
+            getKriteria(list, index);
+        }
+    }
+
+    public void getKriteria(List<NilaiResponse.DetailNilai> list, int index) {
         viewModel.getKriteria(
-                idNilai
+                list.get(index).idNilai
         ).observe(this, new Observer<KriteriaResponse>() {
             @Override
             public void onChanged(KriteriaResponse kriteriaResponse) {
                 if (kriteriaResponse != null) {
                     if (kriteriaResponse.status) {
-                        getKriteriaTugasKhusus("171111079", kriteriaResponse);
+                        getKriteriaTugasKhusus(list, index,AppPreference.getUser(MainActivity.this).nrp, kriteriaResponse);
                     }
                 }
             }
         });
     }
 
-    public void getKriteriaTugasKhusus(String nrp, KriteriaResponse kriteriaResponse) {
+    public void getKriteriaTugasKhusus(List<NilaiResponse.DetailNilai> list, int index, String nrp, KriteriaResponse kriteriaResponse) {
         viewModel.getKriteriaTugasKhusus(
                 nrp
         ).observe(this, new Observer<KriteriaTugasKhususResponse>() {
@@ -148,6 +186,8 @@ public class MainActivity extends AppCompatActivity {
                         if (nilai) {
                             Log.e("Nilai", kriteriaResponse.data.get(0).nilai);
                             binding.textViewNilai.setText(kriteriaResponse.data.get(0).nilai);
+                        } else {
+                            setNilai(list, (index + 1));
                         }
                     }
                 }

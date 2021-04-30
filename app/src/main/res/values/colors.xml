@@ -11,4 +11,5 @@
     <color name="primary">#007ca5</color>
     <color name="primary_dark">#004d68</color>
     <color name="background">#dde2e8</color>
+    <color name="placeholder">#dddddd</color>
 </resources>

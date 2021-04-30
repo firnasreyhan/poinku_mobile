@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "482690878701",
+    "project_id": "poinku-108ee",
+    "storage_bucket": "poinku-108ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:482690878701:android:38bf2180c99901c93010e4",
+        "android_client_info": {
+          "package_name": "com.android.poinku"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "482690878701-f9mt3d4d6om8vhi035ugn8k50adthli0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.poinku",
+            "certificate_hash": "73c30cf096c145c98ccdbe0d9a2b17a6758d2635"
+          }
+        },
+        {
+          "client_id": "482690878701-nit83uc588lfjj75qddj0r181p86qert.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAD4JHNFksXz8wCo_hLHTfNtjOMq9-QXbU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "482690878701-nit83uc588lfjj75qddj0r181p86qert.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

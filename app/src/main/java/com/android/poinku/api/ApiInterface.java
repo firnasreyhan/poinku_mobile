@@ -3,8 +3,11 @@ package com.android.poinku.api;
 import com.android.poinku.api.response.AturanResponse;
 import com.android.poinku.api.response.BaseResponse;
 import com.android.poinku.api.response.DataPoinResponse;
+import com.android.poinku.api.response.DetailTugasKhususResponse;
 import com.android.poinku.api.response.JenisResponse;
 import com.android.poinku.api.response.JenisTugasKhususResponse;
+import com.android.poinku.api.response.KegiatanResponse;
+import com.android.poinku.api.response.KontenResponse;
 import com.android.poinku.api.response.KriteriaResponse;
 import com.android.poinku.api.response.KriteriaTugasKhususResponse;
 import com.android.poinku.api.response.LingkupResponse;
@@ -122,6 +125,31 @@ public interface ApiInterface {
     @GET("Mahasiswa")
     Call<MahasiswaResponse> getMahasiswa(
             @Query("nrp") String nrp
+    );
+
+    @GET("TugasKhusus/detail")
+    Call<DetailTugasKhususResponse> getDetailTugasKhusus(
+            @Query("id") String id
+    );
+
+    @GET("TugasKhusus/kegiatan")
+    Call<KegiatanResponse> getKegiatan(
+            @Query("id") String id
+    );
+
+    @GET("TugasKhusus/konten")
+    Call<KontenResponse> getKonten(
+            @Query("id") String id
+    );
+
+    @FormUrlEncoded
+    @POST("Mahasiswa/insert")
+    Call<MahasiswaResponse> postMahasiswa(
+            @Field("nrp") String nrp,
+            @Field("email") String email,
+            @Field("aturan") String aturan,
+            @Field("prodi") String prodi,
+            @Field("angkatan") String angkatan
     );
 
 //    @POST("user/login")

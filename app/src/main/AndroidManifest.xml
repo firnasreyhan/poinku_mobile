@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Poinku"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.DaftarJenisKegiatanActivity"></activity>
+        <activity android:name=".view.DetailTugasKhususActivity"></activity>
+        <activity android:name=".view.DaftarJenisTugasKhususActivity" />
+        <activity android:name=".view.DaftarTugasKhususActivity" />
         <activity android:name=".view.CatatActivity" />
         <activity android:name=".view.MainActivity" />
         <activity android:name=".view.SplashScreenActivity">

@@ -9,8 +9,11 @@ import com.android.poinku.api.ApiInterface;
 import com.android.poinku.api.response.AturanResponse;
 import com.android.poinku.api.response.BaseResponse;
 import com.android.poinku.api.response.DataPoinResponse;
+import com.android.poinku.api.response.DetailTugasKhususResponse;
 import com.android.poinku.api.response.JenisResponse;
 import com.android.poinku.api.response.JenisTugasKhususResponse;
+import com.android.poinku.api.response.KegiatanResponse;
+import com.android.poinku.api.response.KontenResponse;
 import com.android.poinku.api.response.KriteriaResponse;
 import com.android.poinku.api.response.KriteriaTugasKhususResponse;
 import com.android.poinku.api.response.LingkupResponse;
@@ -39,8 +42,10 @@ public class OnlineRepository {
         apiInterface.getJenis().enqueue(new Callback<JenisResponse>() {
             @Override
             public void onResponse(Call<JenisResponse> call, Response<JenisResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -58,8 +63,10 @@ public class OnlineRepository {
         apiInterface.getLingkup().enqueue(new Callback<LingkupResponse>() {
             @Override
             public void onResponse(Call<LingkupResponse> call, Response<LingkupResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -77,8 +84,10 @@ public class OnlineRepository {
         apiInterface.getPeran().enqueue(new Callback<PeranResponse>() {
             @Override
             public void onResponse(Call<PeranResponse> call, Response<PeranResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -103,8 +112,10 @@ public class OnlineRepository {
         ).enqueue(new Callback<TugasKhususResponse>() {
             @Override
             public void onResponse(Call<TugasKhususResponse> call, Response<TugasKhususResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -127,8 +138,10 @@ public class OnlineRepository {
         ).enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -150,8 +163,10 @@ public class OnlineRepository {
         ).enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -173,8 +188,10 @@ public class OnlineRepository {
         ).enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -198,8 +215,10 @@ public class OnlineRepository {
         ).enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -221,8 +240,10 @@ public class OnlineRepository {
         ).enqueue(new Callback<DataPoinResponse>() {
             @Override
             public void onResponse(Call<DataPoinResponse> call, Response<DataPoinResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -243,8 +264,10 @@ public class OnlineRepository {
         ).enqueue(new Callback<TotalPoinResponse>() {
             @Override
             public void onResponse(Call<TotalPoinResponse> call, Response<TotalPoinResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -265,8 +288,10 @@ public class OnlineRepository {
         ).enqueue(new Callback<AturanResponse>() {
             @Override
             public void onResponse(Call<AturanResponse> call, Response<AturanResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -287,8 +312,10 @@ public class OnlineRepository {
         ).enqueue(new Callback<NilaiResponse>() {
             @Override
             public void onResponse(Call<NilaiResponse> call, Response<NilaiResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -309,8 +336,10 @@ public class OnlineRepository {
         ).enqueue(new Callback<PoinResponse>() {
             @Override
             public void onResponse(Call<PoinResponse> call, Response<PoinResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -331,8 +360,10 @@ public class OnlineRepository {
         ).enqueue(new Callback<KriteriaResponse>() {
             @Override
             public void onResponse(Call<KriteriaResponse> call, Response<KriteriaResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -353,14 +384,44 @@ public class OnlineRepository {
         ).enqueue(new Callback<MahasiswaResponse>() {
             @Override
             public void onResponse(Call<MahasiswaResponse> call, Response<MahasiswaResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<MahasiswaResponse> call, Throwable t) {
                 Log.e("getMahasiswa", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<MahasiswaResponse> postMahasiswa(String nrp, String email, String aturan, String prodi, String angkatan) {
+        MutableLiveData<MahasiswaResponse> data = new MutableLiveData<>();
+        apiInterface.postMahasiswa(
+                nrp,
+                email,
+                aturan,
+                prodi,
+                angkatan
+        ).enqueue(new Callback<MahasiswaResponse>() {
+            @Override
+            public void onResponse(Call<MahasiswaResponse> call, Response<MahasiswaResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MahasiswaResponse> call, Throwable t) {
+                Log.e("postMahasiswa", t.getMessage());
                 data.postValue(null);
             }
         });
@@ -375,8 +436,10 @@ public class OnlineRepository {
         ).enqueue(new Callback<JenisTugasKhususResponse>() {
             @Override
             public void onResponse(Call<JenisTugasKhususResponse> call, Response<JenisTugasKhususResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
@@ -397,14 +460,88 @@ public class OnlineRepository {
         ).enqueue(new Callback<KriteriaTugasKhususResponse>() {
             @Override
             public void onResponse(Call<KriteriaTugasKhususResponse> call, Response<KriteriaTugasKhususResponse> response) {
-                if (response.code() == 200) {
-                    data.postValue(response.body());
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<KriteriaTugasKhususResponse> call, Throwable t) {
                 Log.e("getKriteriaTugasKhusus", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<DetailTugasKhususResponse> getDetailTugasKhusus(String id) {
+        MutableLiveData<DetailTugasKhususResponse> data = new MutableLiveData<>();
+        apiInterface.getDetailTugasKhusus(
+                id
+        ).enqueue(new Callback<DetailTugasKhususResponse>() {
+            @Override
+            public void onResponse(Call<DetailTugasKhususResponse> call, Response<DetailTugasKhususResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DetailTugasKhususResponse> call, Throwable t) {
+                Log.e("getDetailTugasKhusus", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<KegiatanResponse> getKegiatan(String id) {
+        MutableLiveData<KegiatanResponse> data = new MutableLiveData<>();
+        apiInterface.getKegiatan(
+                id
+        ).enqueue(new Callback<KegiatanResponse>() {
+            @Override
+            public void onResponse(Call<KegiatanResponse> call, Response<KegiatanResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<KegiatanResponse> call, Throwable t) {
+                Log.e("getKegiatan", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<KontenResponse> getKonten(String id) {
+        MutableLiveData<KontenResponse> data = new MutableLiveData<>();
+        apiInterface.getKonten(
+                id
+        ).enqueue(new Callback<KontenResponse>() {
+            @Override
+            public void onResponse(Call<KontenResponse> call, Response<KontenResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<KontenResponse> call, Throwable t) {
+                Log.e("getKonten", t.getMessage());
                 data.postValue(null);
             }
         });
