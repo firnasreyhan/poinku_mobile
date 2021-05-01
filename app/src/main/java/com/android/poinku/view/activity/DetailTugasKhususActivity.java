@@ -1,4 +1,4 @@
-package com.android.poinku.view;
+package com.android.poinku.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;

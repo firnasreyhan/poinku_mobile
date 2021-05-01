@@ -1,4 +1,4 @@
-package com.android.poinku.view;
+package com.android.poinku.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -8,45 +8,25 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 
-import com.android.poinku.adapter.DaftarJenisTugasKhususAdapter;
 import com.android.poinku.adapter.DaftarTugasKhususAdapter;
-import com.android.poinku.api.response.DataPoinResponse;
 import com.android.poinku.api.response.JenisTugasKhususResponse;
-import com.android.poinku.databinding.ActivityDaftarJenisTugasKhususBinding;
-import com.android.poinku.viewmodel.DaftarJenisTugasKhususViewModel;
+import com.android.poinku.databinding.ActivityDaftarTugasKhususBinding;
+import com.android.poinku.preference.AppPreference;
+import com.android.poinku.viewmodel.DaftarTugasKhususViewModel;
 
-public class DaftarJenisTugasKhususActivity extends AppCompatActivity {
-    private ActivityDaftarJenisTugasKhususBinding binding;
-    private DaftarJenisTugasKhususViewModel viewModel;
-
-    private String idJenis, jenis;
+public class DaftarTugasKhususActivity extends AppCompatActivity {
+    private ActivityDaftarTugasKhususBinding binding;
+    private DaftarTugasKhususViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityDaftarJenisTugasKhususBinding.inflate(getLayoutInflater());
+        binding = ActivityDaftarTugasKhususBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        idJenis = getIntent().getStringExtra("ID_JENIS");
-        jenis = getIntent().getStringExtra("JENIS");
-
-        for (int i = 0, x = 0; i < jenis.length(); i++) {
-            if (jenis.charAt(i) == ' ') {
-                x++;
-            }
-
-            if (x == 2) {
-                binding.textViewToolbar.setText(jenis.substring(0, i));
-                break;
-            } else if ((i + 1) == jenis.length() && (x == 0 || x == 1)) {
-                binding.textViewToolbar.setText(jenis);
-            }
-        }
-
-        viewModel = ViewModelProviders.of(this).get(DaftarJenisTugasKhususViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(DaftarTugasKhususViewModel.class);
 
         setSupportActionBar(binding.toolbar);
         setTitle("");
@@ -56,14 +36,15 @@ public class DaftarJenisTugasKhususActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setHasFixedSize(true);
 
-        getDataPoin();
+        getJenisTugasKhusus();
 
         binding.swiperRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 binding.shimmerFrameLayout.setVisibility(View.VISIBLE);
                 binding.recyclerView.setVisibility(View.GONE);
-                getDataPoin();
+                binding.linearLayoutDataKosong.setVisibility(View.GONE);
+                getJenisTugasKhusus();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -92,21 +73,26 @@ public class DaftarJenisTugasKhususActivity extends AppCompatActivity {
         binding.shimmerFrameLayout.startShimmer();
     }
 
-    public void getDataPoin() {
+    public void getJenisTugasKhusus() {
         binding.shimmerFrameLayout.startShimmer();
-        viewModel.getDataPoin(
-                "171111079",
-                idJenis
-        ).observe(this, new Observer<DataPoinResponse>() {
+        viewModel.getJenisTugasKhusus(
+                AppPreference.getUser(this).nrp
+        ).observe(this, new Observer<JenisTugasKhususResponse>() {
             @Override
-            public void onChanged(DataPoinResponse dataPoinResponse) {
-                if (dataPoinResponse != null) {
-                    if (dataPoinResponse.status) {
-                        binding.recyclerView.setAdapter(new DaftarJenisTugasKhususAdapter(dataPoinResponse.data));
+            public void onChanged(JenisTugasKhususResponse jenisTugasKhususResponse) {
+                if (jenisTugasKhususResponse != null) {
+                    if (jenisTugasKhususResponse.status) {
+                        binding.recyclerView.setAdapter(new DaftarTugasKhususAdapter(jenisTugasKhususResponse.data));
 
                         binding.shimmerFrameLayout.stopShimmer();
                         binding.shimmerFrameLayout.setVisibility(View.GONE);
                         binding.recyclerView.setVisibility(View.VISIBLE);
+                        binding.linearLayoutDataKosong.setVisibility(View.GONE);
+                    } else {
+                        binding.shimmerFrameLayout.stopShimmer();
+                        binding.shimmerFrameLayout.setVisibility(View.GONE);
+                        binding.recyclerView.setVisibility(View.GONE);
+                        binding.linearLayoutDataKosong.setVisibility(View.VISIBLE);
                     }
                 }
             }

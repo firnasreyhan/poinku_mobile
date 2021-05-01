@@ -13,12 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Poinku"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.DetailTugasKhususActivity"></activity>
-        <activity android:name=".view.DaftarJenisTugasKhususActivity" />
-        <activity android:name=".view.DaftarTugasKhususActivity" />
-        <activity android:name=".view.CatatActivity" />
-        <activity android:name=".view.MainActivity" />
-        <activity android:name=".view.SplashScreenActivity">
+        <activity android:name=".view.activity.InformasiActivity"></activity>
+        <activity android:name=".view.activity.DetailTugasKhususActivity" />
+        <activity android:name=".view.activity.DaftarJenisTugasKhususActivity" />
+        <activity android:name=".view.activity.DaftarTugasKhususActivity" />
+        <activity android:name=".view.activity.CatatActivity" />
+        <activity android:name=".view.activity.MainActivity" />
+        <activity android:name=".view.activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -8,7 +8,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:background="@color/background"
-    tools:context=".view.CatatActivity">
+    tools:context=".view.activity.CatatActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"

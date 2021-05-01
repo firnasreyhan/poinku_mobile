@@ -1,41 +1,42 @@
-package com.android.poinku.view;
+package com.android.poinku.view.fragment;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import com.android.poinku.R;
 import com.android.poinku.adapter.DaftarTugasKhususAdapter;
+import com.android.poinku.adapter.NilaiAdapter;
 import com.android.poinku.api.response.JenisTugasKhususResponse;
-import com.android.poinku.databinding.ActivityDaftarTugasKhususBinding;
-import com.android.poinku.viewmodel.DaftarTugasKhususViewModel;
+import com.android.poinku.api.response.NilaiResponse;
+import com.android.poinku.databinding.FragmentNilaiBinding;
+import com.android.poinku.preference.AppPreference;
+import com.android.poinku.viewmodel.InformasiViewModel;
 
-public class DaftarTugasKhususActivity extends AppCompatActivity {
-    private ActivityDaftarTugasKhususBinding binding;
-    private DaftarTugasKhususViewModel viewModel;
+public class NilaiFragment extends Fragment {
+    private FragmentNilaiBinding binding;
+    private InformasiViewModel viewModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = ActivityDaftarTugasKhususBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        binding = FragmentNilaiBinding.inflate(inflater, container, false);
+        viewModel = ViewModelProviders.of(this).get(InformasiViewModel.class);
 
-        viewModel = ViewModelProviders.of(this).get(DaftarTugasKhususViewModel.class);
-
-        setSupportActionBar(binding.toolbar);
-        setTitle("");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setHasFixedSize(true);
 
-        getJenisTugasKhusus();
+        getNilai();
 
         binding.swiperRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -43,7 +44,7 @@ public class DaftarTugasKhususActivity extends AppCompatActivity {
                 binding.shimmerFrameLayout.setVisibility(View.VISIBLE);
                 binding.recyclerView.setVisibility(View.GONE);
                 binding.linearLayoutDataKosong.setVisibility(View.GONE);
-                getJenisTugasKhusus();
+                getNilai();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -52,36 +53,38 @@ public class DaftarTugasKhususActivity extends AppCompatActivity {
                 }, 3000);
             }
         });
+
+        return binding.getRoot();
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         binding.shimmerFrameLayout.stopShimmer();
         super.onPause();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         binding.shimmerFrameLayout.startShimmer();
     }
 
-    public void getJenisTugasKhusus() {
+    public void getNilai() {
         binding.shimmerFrameLayout.startShimmer();
-        viewModel.getJenisTugasKhusus(
-                "171111079"
-        ).observe(this, new Observer<JenisTugasKhususResponse>() {
+        viewModel.getNilai(
+                AppPreference.getUser(getContext()).idAturan
+        ).observe(getActivity(), new Observer<NilaiResponse>() {
             @Override
-            public void onChanged(JenisTugasKhususResponse jenisTugasKhususResponse) {
-                if (jenisTugasKhususResponse != null) {
-                    if (jenisTugasKhususResponse.status) {
-                        binding.recyclerView.setAdapter(new DaftarTugasKhususAdapter(jenisTugasKhususResponse.data));
+            public void onChanged(NilaiResponse nilaiResponse) {
+                if (nilaiResponse != null) {
+                    if (nilaiResponse.status) {
+                        binding.recyclerView.setAdapter(new NilaiAdapter(nilaiResponse.data));
 
                         binding.shimmerFrameLayout.stopShimmer();
                         binding.shimmerFrameLayout.setVisibility(View.GONE);

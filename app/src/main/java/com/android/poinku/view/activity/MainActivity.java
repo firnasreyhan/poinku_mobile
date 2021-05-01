@@ -1,4 +1,4 @@
-package com.android.poinku.view;
+package com.android.poinku.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -63,6 +63,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(v.getContext(), CatatActivity.class));
+            }
+        });
+
+        binding.materialCardViewInformasi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(v.getContext(), InformasiActivity.class));
             }
         });
 

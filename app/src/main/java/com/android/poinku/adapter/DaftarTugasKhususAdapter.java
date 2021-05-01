@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.poinku.R;
 import com.android.poinku.api.response.JenisTugasKhususResponse;
-import com.android.poinku.view.DaftarJenisTugasKhususActivity;
+import com.android.poinku.view.activity.DaftarJenisTugasKhususActivity;
 
 import java.util.List;
 
