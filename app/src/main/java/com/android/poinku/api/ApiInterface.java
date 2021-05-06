@@ -149,7 +149,15 @@ public interface ApiInterface {
             @Field("email") String email,
             @Field("aturan") String aturan,
             @Field("prodi") String prodi,
-            @Field("angkatan") String angkatan
+            @Field("angkatan") String angkatan,
+            @Field("token") String token
+    );
+
+    @FormUrlEncoded
+    @POST("Mahasiswa/updateToken")
+    Call<BaseResponse> postTokenMahasiswa(
+            @Field("nrp") String nrp,
+            @Field("token") String token
     );
 
 //    @POST("user/login")

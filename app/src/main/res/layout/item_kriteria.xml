@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/_13sdp"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_coin" />
+            android:src="@drawable/ic_folder" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,40 +78,15 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_light"
-                    android:text="Peran: "
-                    android:textSize="@dimen/_8sdp"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:id="@+id/textViewPeran"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/open_sans_bold"
-                    android:text="-"
-                    android:textSize="@dimen/_8sdp"
-                    android:textColor="@android:color/black" />
-
-            </LinearLayout>
-
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textViewPoin"
+            android:id="@+id/textViewJumlahKegiatan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_bold"
             android:gravity="left|center_vertical"
-            android:text="0 Poin"
+            android:text="0 Kegiatan"
             android:textSize="@dimen/_10sdp"
             android:textColor="@android:color/black" />
 

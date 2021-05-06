@@ -43,6 +43,12 @@ public class DetailTugasKhususResponse extends BaseResponse {
         @SerializedName("TANGGAL_DATA")
         public String tanggalData;
 
+        @SerializedName("STATUS_VALIDASI")
+        public String statusValidasi;
+
+        @SerializedName("TANGGAL_VALIDASI")
+        public String tanggalValidasi;
+
         @SerializedName("POIN")
         public String poin;
     }

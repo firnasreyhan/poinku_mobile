@@ -1,5 +1,6 @@
 package com.android.poinku.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.poinku.R;
 import com.android.poinku.api.response.NilaiResponse;
+import com.android.poinku.view.activity.KriteriaActivity;
 
 import java.util.List;
 
@@ -43,6 +45,16 @@ public class NilaiAdapter extends RecyclerView.Adapter<NilaiAdapter.ViewHolder> 
             super(itemView);
             textViewNilai = itemView.findViewById(R.id.textViewNilai);
             textViewPoinMinimal = itemView.findViewById(R.id.textViewPoinMinimal);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), KriteriaActivity.class);
+                    intent.putExtra("NILAI", list.get(getAdapterPosition()).nilai);
+                    intent.putExtra("POIN_MINIMAL", list.get(getAdapterPosition()).poinMinimal);
+                    v.getContext().startActivity(intent);
+                }
+            });
         }
     }
 }

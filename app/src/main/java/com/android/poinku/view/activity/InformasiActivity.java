@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.android.poinku.R;
 import com.android.poinku.adapter.TabAdapter;
 import com.android.poinku.databinding.ActivityInformasiBinding;
+import com.android.poinku.preference.AppPreference;
 import com.android.poinku.view.fragment.NilaiFragment;
 import com.android.poinku.view.fragment.PoinFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -31,6 +32,7 @@ public class InformasiActivity extends AppCompatActivity {
         tabAdapter.addFragment(new NilaiFragment(), "Nilai", R.drawable.ic_outline_medal);
         tabAdapter.addFragment(new PoinFragment(), "Poin", R.drawable.ic_outline_coin);
 
+        binding.textViewAturan.setText(AppPreference.getUser(this).tahun + " / " + AppPreference.getUser(this).keterangan);
         binding.viewPager.setAdapter(tabAdapter);
         binding.tabLayout.setupWithViewPager(binding.viewPager);
 

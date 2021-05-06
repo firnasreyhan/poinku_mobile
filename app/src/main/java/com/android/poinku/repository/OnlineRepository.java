@@ -401,14 +401,15 @@ public class OnlineRepository {
         return data;
     }
 
-    public MutableLiveData<MahasiswaResponse> postMahasiswa(String nrp, String email, String aturan, String prodi, String angkatan) {
+    public MutableLiveData<MahasiswaResponse> postMahasiswa(String nrp, String email, String aturan, String prodi, String angkatan, String token) {
         MutableLiveData<MahasiswaResponse> data = new MutableLiveData<>();
         apiInterface.postMahasiswa(
                 nrp,
                 email,
                 aturan,
                 prodi,
-                angkatan
+                angkatan,
+                token
         ).enqueue(new Callback<MahasiswaResponse>() {
             @Override
             public void onResponse(Call<MahasiswaResponse> call, Response<MahasiswaResponse> response) {
@@ -422,6 +423,31 @@ public class OnlineRepository {
             @Override
             public void onFailure(Call<MahasiswaResponse> call, Throwable t) {
                 Log.e("postMahasiswa", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<BaseResponse> postTokenMahasiswa(String nrp, String token) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        apiInterface.postTokenMahasiswa(
+                nrp,
+                token
+        ).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("postTokenMahasiswa", t.getMessage());
                 data.postValue(null);
             }
         });

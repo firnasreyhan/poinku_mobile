@@ -36,5 +36,8 @@ public class MahasiswaResponse extends BaseResponse {
 
         @SerializedName("STATUS")
         public String status;
+
+        @SerializedName("TOKEN")
+        public String token;
     }
 }

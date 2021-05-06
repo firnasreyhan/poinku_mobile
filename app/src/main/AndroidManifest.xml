@@ -3,6 +3,7 @@
     package="com.android.poinku">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Poinku"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.InformasiActivity"></activity>
+        <activity android:name=".view.activity.KriteriaActivity"></activity>
+        <activity android:name=".view.activity.InformasiActivity" />
         <activity android:name=".view.activity.DetailTugasKhususActivity" />
         <activity android:name=".view.activity.DaftarJenisTugasKhususActivity" />
         <activity android:name=".view.activity.DaftarTugasKhususActivity" />
@@ -26,6 +28,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".service.notif.MyFireBaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".service.notif.MyFirebaseIdService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_launcher_foreground" />
+
     </application>
 
 </manifest>

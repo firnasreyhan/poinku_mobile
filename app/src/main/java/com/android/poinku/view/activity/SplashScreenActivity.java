@@ -8,12 +8,15 @@ import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.poinku.R;
+import com.android.poinku.api.response.BaseResponse;
 import com.android.poinku.api.response.MahasiswaResponse;
 import com.android.poinku.databinding.ActivitySplashScreenBinding;
 import com.android.poinku.preference.AppPreference;
+import com.android.poinku.service.notif.Token;
 import com.android.poinku.viewmodel.SplashScreenViewModel;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
@@ -22,6 +25,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.Arrays;
 import java.util.List;
@@ -86,7 +91,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             }
                             String angkatan = "20" + nrp.substring(0,2);
 
-                            getMahasiswa(nrp, email, "1", prodi, angkatan);
+                            getMahasiswa(nrp, email, "1", prodi, angkatan, updateToken(nrp));
                         } else {
                             deleteAccount();
                         }
@@ -136,7 +141,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 });
     }
 
-    public void getMahasiswa(String nrp, String email, String aturan, String prodi, String angkatan) {
+    public void getMahasiswa(String nrp, String email, String aturan, String prodi, String angkatan, String token) {
         viewModel.getMahasiswa(
                 nrp
         ).observe(this, new Observer<MahasiswaResponse>() {
@@ -144,25 +149,28 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void onChanged(MahasiswaResponse mahasiswaResponse) {
                 if (mahasiswaResponse != null) {
                     if (mahasiswaResponse.status) {
+                        postTokenMahasiswa(nrp, token);
+
                         AppPreference.saveUser(SplashScreenActivity.this, mahasiswaResponse.data);
 
                         startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
                         finish();
                     } else {
-                        postMahasiswa(nrp, email, "1", prodi, angkatan);
+                        postMahasiswa(nrp, email, "1", prodi, angkatan, token);
                     }
                 }
             }
         });
     }
 
-    public void postMahasiswa(String nrp, String email, String aturan, String prodi, String angkatan) {
+    public void postMahasiswa(String nrp, String email, String aturan, String prodi, String angkatan, String token) {
         viewModel.postMahasiswa(
                 nrp,
                 email,
                 aturan,
                 prodi,
-                angkatan
+                angkatan,
+                token
         ).observe(this, new Observer<MahasiswaResponse>() {
             @Override
             public void onChanged(MahasiswaResponse mahasiswaResponse) {
@@ -176,5 +184,28 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void postTokenMahasiswa(String nrp, String token) {
+        viewModel.postTokenMahasiswa(
+                nrp,
+                token
+        ).observe(this, new Observer<BaseResponse>() {
+            @Override
+            public void onChanged(BaseResponse baseResponse) {
+                if (baseResponse != null) {
+                    Log.e("postTokenMahasiswa", baseResponse.message);
+                }
+            }
+        });
+    }
+
+    private String updateToken(String nrp) {
+        String refreshToken = FirebaseInstanceId.getInstance().getToken();
+        String userKey = nrp.replaceAll("[-+.^:,]","");
+        Log.e("userKey", userKey);
+        Log.e("refreshToken", refreshToken);
+        FirebaseDatabase.getInstance().getReference().child("Token").child(userKey).setValue(refreshToken);
+        return refreshToken;
     }
 }
