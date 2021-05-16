@@ -66,6 +66,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        binding.materialCardViewKegiatan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(v.getContext(), DaftarEventActivity.class));
+            }
+        });
+
         binding.materialCardViewInformasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

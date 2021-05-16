@@ -360,7 +360,9 @@ public class CatatActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
-                });
+                })
+                .create()
+                .show();
     }
 
     public boolean checkData() {

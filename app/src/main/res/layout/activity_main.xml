@@ -272,7 +272,7 @@
                     android:background="@android:color/darker_gray"/>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardViewEventList"
+                    android:id="@+id/materialCardViewKegiatan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

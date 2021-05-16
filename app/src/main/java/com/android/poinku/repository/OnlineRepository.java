@@ -10,6 +10,7 @@ import com.android.poinku.api.response.AturanResponse;
 import com.android.poinku.api.response.BaseResponse;
 import com.android.poinku.api.response.DataPoinResponse;
 import com.android.poinku.api.response.DetailTugasKhususResponse;
+import com.android.poinku.api.response.EventResponse;
 import com.android.poinku.api.response.JenisResponse;
 import com.android.poinku.api.response.JenisTugasKhususResponse;
 import com.android.poinku.api.response.KegiatanResponse;
@@ -21,6 +22,7 @@ import com.android.poinku.api.response.MahasiswaResponse;
 import com.android.poinku.api.response.NilaiResponse;
 import com.android.poinku.api.response.PeranResponse;
 import com.android.poinku.api.response.PoinResponse;
+import com.android.poinku.api.response.PresensiResponse;
 import com.android.poinku.api.response.TotalPoinResponse;
 import com.android.poinku.api.response.TugasKhususResponse;
 
@@ -568,6 +570,129 @@ public class OnlineRepository {
             @Override
             public void onFailure(Call<KontenResponse> call, Throwable t) {
                 Log.e("getKonten", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<EventResponse> getEvent() {
+        MutableLiveData<EventResponse> data = new MutableLiveData<>();
+        apiInterface.getEvent().enqueue(new Callback<EventResponse>() {
+            @Override
+            public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EventResponse> call, Throwable t) {
+                Log.e("getEvent", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<EventResponse> getDetailEvent(String id) {
+        MutableLiveData<EventResponse> data = new MutableLiveData<>();
+        apiInterface.getDetailEvent(
+                id
+        ).enqueue(new Callback<EventResponse>() {
+            @Override
+            public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EventResponse> call, Throwable t) {
+                Log.e("getDetailEvent", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<BaseResponse> postDaftarEvent(String email, String id) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        apiInterface.postDaftarEvent(
+                email,
+                id
+        ).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("postDaftarEvent", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<BaseResponse> postBatalDaftarEvent(String email, String id) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        apiInterface.postBatalDaftarEvent(
+                email,
+                id
+        ).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("postBatalDaftarEvent", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+
+
+    public MutableLiveData<PresensiResponse> getPresensi(String email, String id) {
+        MutableLiveData<PresensiResponse> data = new MutableLiveData<>();
+        apiInterface.getPresensi(
+                email,
+                id
+        ).enqueue(new Callback<PresensiResponse>() {
+            @Override
+            public void onResponse(Call<PresensiResponse> call, Response<PresensiResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PresensiResponse> call, Throwable t) {
+                Log.e("getPresensi", t.getMessage());
                 data.postValue(null);
             }
         });

@@ -85,7 +85,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
 
-
     //multidex
     implementation 'androidx.multidex:multidex:2.0.1'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

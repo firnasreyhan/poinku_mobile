@@ -4,6 +4,7 @@ import com.android.poinku.api.response.AturanResponse;
 import com.android.poinku.api.response.BaseResponse;
 import com.android.poinku.api.response.DataPoinResponse;
 import com.android.poinku.api.response.DetailTugasKhususResponse;
+import com.android.poinku.api.response.EventResponse;
 import com.android.poinku.api.response.JenisResponse;
 import com.android.poinku.api.response.JenisTugasKhususResponse;
 import com.android.poinku.api.response.KegiatanResponse;
@@ -15,6 +16,7 @@ import com.android.poinku.api.response.MahasiswaResponse;
 import com.android.poinku.api.response.NilaiResponse;
 import com.android.poinku.api.response.PeranResponse;
 import com.android.poinku.api.response.PoinResponse;
+import com.android.poinku.api.response.PresensiResponse;
 import com.android.poinku.api.response.TotalPoinResponse;
 import com.android.poinku.api.response.TugasKhususResponse;
 
@@ -160,6 +162,33 @@ public interface ApiInterface {
             @Field("token") String token
     );
 
+    @GET("Event")
+    Call<EventResponse> getEvent();
+
+    @GET("Event/detailEvent")
+    Call<EventResponse> getDetailEvent(
+            @Query("id") String id
+    );
+
+    @FormUrlEncoded
+    @POST("Event/daftar")
+    Call<BaseResponse> postDaftarEvent(
+            @Field("email") String email,
+            @Field("id") String id
+    );
+
+    @FormUrlEncoded
+    @POST("Event/batal")
+    Call<BaseResponse> postBatalDaftarEvent(
+            @Field("email") String email,
+            @Field("id") String id
+    );
+
+    @GET("Event/presensi")
+    Call<PresensiResponse> getPresensi(
+            @Query("email") String email,
+            @Query("id") String id
+    );
 //    @POST("user/login")
 //    @FormUrlEncoded
 //    Call<SignInResponse> postSignIn(
