@@ -721,7 +721,30 @@ public class OnlineRepository {
         return data;
     }
 
+    public MutableLiveData<BaseResponse> putPengajuanTugasKhusus(String nrp, String nilai) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        apiInterface.putPengajuanTugasKhusus(
+                nrp,
+                nilai
+        ).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("putPengajuanTugasKhusus", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
 
     public MutableLiveData<PresensiResponse> getPresensi(String email, String id) {
         MutableLiveData<PresensiResponse> data = new MutableLiveData<>();

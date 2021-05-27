@@ -28,6 +28,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Query;
 
@@ -198,6 +199,13 @@ public interface ApiInterface {
     Call<PresensiResponse> getPresensi(
             @Query("email") String email,
             @Query("id") String id
+    );
+
+    @FormUrlEncoded
+    @PUT("Mahasiswa/pengajuan")
+    Call<BaseResponse> putPengajuanTugasKhusus(
+            @Field("nrp") String nrp,
+            @Field("nilai") String nilai
     );
 //    @POST("user/login")
 //    @FormUrlEncoded

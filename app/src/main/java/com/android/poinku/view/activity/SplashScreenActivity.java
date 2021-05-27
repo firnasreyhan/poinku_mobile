@@ -93,7 +93,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                             String angkatan = "20" + nrp.substring(0,2);
                             String kategori = nrp.substring(5,6).equalsIgnoreCase("1") ? "0" : "1";
 
-                            getAturanAktif(nrp, email, kategori, prodi, angkatan, updateToken(nrp));
+//                            getAturanAktif(nrp, email, kategori, prodi, angkatan, updateToken(nrp));
+                            getMahasiswa(nrp, email, kategori, prodi, angkatan, updateToken(nrp));
                         } else {
                             deleteAccount();
                         }
@@ -131,6 +132,16 @@ public class SplashScreenActivity extends AppCompatActivity {
                 RC_SIGN_IN);
     }
 
+    public void doSignOut() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        finish();
+                    }
+                });
+    }
+
     public void deleteAccount() {
         AuthUI.getInstance()
                 .delete(this)
@@ -143,28 +154,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 });
     }
 
-    public void getAturanAktif(String nrp, String email, String kategori, String prodi, String angkatan, String token) {
-        viewModel.getAturanAktif(
-                kategori
-        ).observe(this, new Observer<AturanResponse>() {
-            @Override
-            public void onChanged(AturanResponse aturanResponse) {
-                if (aturanResponse != null) {
-                    if (aturanResponse.status) {
-                        getMahasiswa(nrp, email, aturanResponse.data.idAturan, prodi, angkatan, updateToken(nrp));
-                    } else {
-                        Toast.makeText(SplashScreenActivity.this, "Tidak ada aturan tugas khusus yang aktif, segera hubungi admin", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                } else {
-                    Toast.makeText(SplashScreenActivity.this, "Tidak ada aturan tugas khusus yang aktif, segera hubungi admin", Toast.LENGTH_SHORT).show();
-                    finish();
-                }
-            }
-        });
-    }
-
-    public void getMahasiswa(String nrp, String email, String aturan, String prodi, String angkatan, String token) {
+    public void getMahasiswa(String nrp, String email, String kategori, String prodi, String angkatan, String token) {
         viewModel.getMahasiswa(
                 nrp
         ).observe(this, new Observer<MahasiswaResponse>() {
@@ -179,8 +169,31 @@ public class SplashScreenActivity extends AppCompatActivity {
                         startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
                         finish();
                     } else {
-                        postMahasiswa(nrp, email, "1", prodi, angkatan, token);
+                        getAturanAktif(nrp, email, kategori, prodi, angkatan, token);
                     }
+                }
+            }
+        });
+    }
+
+    public void getAturanAktif(String nrp, String email, String kategori, String prodi, String angkatan, String token) {
+        viewModel.getAturanAktif(
+                kategori
+        ).observe(this, new Observer<AturanResponse>() {
+            @Override
+            public void onChanged(AturanResponse aturanResponse) {
+                if (aturanResponse != null) {
+                    if (aturanResponse.status) {
+                        postMahasiswa(nrp, email, aturanResponse.data.idAturan, prodi, angkatan, token);
+                    } else {
+                        doSignOut();
+                        Toast.makeText(SplashScreenActivity.this, "Tidak ada aturan tugas khusus yang aktif, segera hubungi admin", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                } else {
+                    doSignOut();
+                    Toast.makeText(SplashScreenActivity.this, "Tidak ada aturan tugas khusus yang aktif, segera hubungi admin", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
         });

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.android.poinku.api.response.BaseResponse;
 import com.android.poinku.api.response.DataPoinResponse;
 import com.android.poinku.api.response.KriteriaResponse;
 import com.android.poinku.api.response.KriteriaTugasKhususResponse;
@@ -56,6 +57,13 @@ public class MainViewModel extends AndroidViewModel {
     public MutableLiveData<KriteriaTugasKhususResponse> getKriteriaTugasKhusus(String nrp) {
         return onlineRepository.getKriteriaTugasKhusus(
                 nrp
+        );
+    }
+
+    public MutableLiveData<BaseResponse> putPengajuanTugasKhusus(String nrp, String nilai) {
+        return onlineRepository.putPengajuanTugasKhusus(
+                nrp,
+                nilai
         );
     }
 }

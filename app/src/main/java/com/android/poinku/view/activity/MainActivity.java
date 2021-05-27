@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.android.poinku.api.response.BaseResponse;
 import com.android.poinku.api.response.KriteriaResponse;
 import com.android.poinku.api.response.KriteriaTugasKhususResponse;
 import com.android.poinku.api.response.MahasiswaResponse;
@@ -28,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private MainViewModel viewModel;
     private FirebaseUser firebaseUser;
+    private ProgressDialog progressDialog;
 
     private int poin;
 
@@ -39,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Mohon tunggu sebentar...");
+        progressDialog.setCancelable(false);
 
         Picasso.get()
                 .load(firebaseUser.getPhotoUrl())
@@ -86,6 +95,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(v.getContext(), DaftarTugasKhususActivity.class));
             }
         });
+
+        binding.materialButtonAjukanValidasi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialog.show();
+                putPengajuanTugasKhusus();
+                binding.materialButtonAjukanValidasi.setVisibility(View.GONE);
+                binding.textViewStatusValidasi.setText("Belum Divalidasi");
+            }
+        });
     }
 
     public void getMahasiswa() {
@@ -97,10 +116,45 @@ public class MainActivity extends AppCompatActivity {
                 if (mahasiswaResponse != null) {
                     if (mahasiswaResponse.status) {
                         binding.textViewAturan.setText(mahasiswaResponse.data.tahun + " / " + mahasiswaResponse.data.keterangan);
-                        binding.textViewStatusValidasi.setText(mahasiswaResponse.data.status.equalsIgnoreCase("0") ? "Belum Divalidasi" : "Divalidasi");
                         binding.textViewTanggalValidasi.setText(mahasiswaResponse.data.tanggalValidasi != null ? mahasiswaResponse.data.tanggalValidasi : "-");
 
                         getNilai(mahasiswaResponse.data.idAturan);
+
+                        if (mahasiswaResponse.data.status != null) {
+                            binding.materialButtonAjukanValidasi.setVisibility(View.GONE);
+                            binding.textViewStatusValidasi.setText(mahasiswaResponse.data.status.equalsIgnoreCase("0") ? "Belum Divalidasi" : "Divalidasi");
+                        } else {
+                            binding.textViewStatusValidasi.setText("Belum Diajukan");
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public void putPengajuanTugasKhusus() {
+        viewModel.putPengajuanTugasKhusus(
+                AppPreference.getUser(this).nrp,
+                binding.textViewNilai.getText().toString()
+        ).observe(this, new Observer<BaseResponse>() {
+            @Override
+            public void onChanged(BaseResponse baseResponse) {
+                if (progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
+                if (baseResponse != null) {
+                    if (baseResponse.status) {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle("Pesan")
+                                .setMessage(baseResponse.message)
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .create()
+                                .show();
                     }
                 }
             }

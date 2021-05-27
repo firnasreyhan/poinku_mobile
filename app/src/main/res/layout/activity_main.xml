@@ -148,7 +148,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/open_sans_bold"
                             android:gravity="right|center_vertical"
-                            android:text="2021 / Reguler"
+                            android:text="-"
                             android:textSize="@dimen/_10sdp"
                             android:textColor="@android:color/black" />
 
@@ -176,7 +176,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/open_sans_bold"
                             android:gravity="right|center_vertical"
-                            android:text="Belum Divalidasi"
+                            android:text="-"
                             android:textSize="@dimen/_10sdp"
                             android:textColor="@android:color/black" />
 
@@ -526,6 +526,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/materialButtonAjukanValidasi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_13sdp"
