@@ -109,6 +109,11 @@ public interface ApiInterface {
             @Query("id") String id
     );
 
+    @GET("Aturan/aturanAktif")
+    Call<AturanResponse> getAturanAktif(
+            @Query("kategori") String kategori
+    );
+
     @GET("Aturan/nilai")
     Call<NilaiResponse> getNilai(
             @Query("id") String id
@@ -168,6 +173,11 @@ public interface ApiInterface {
     @GET("Event/detailEvent")
     Call<EventResponse> getDetailEvent(
             @Query("id") String id
+    );
+
+    @GET("Event/eventUser")
+    Call<EventResponse> getEventUser(
+            @Query("email") String email
     );
 
     @FormUrlEncoded

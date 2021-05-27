@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.poinku.R;
+import com.android.poinku.api.response.AturanResponse;
 import com.android.poinku.api.response.BaseResponse;
 import com.android.poinku.api.response.MahasiswaResponse;
 import com.android.poinku.databinding.ActivitySplashScreenBinding;
@@ -90,8 +91,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 prodi = "DKV";
                             }
                             String angkatan = "20" + nrp.substring(0,2);
+                            String kategori = nrp.substring(5,6).equalsIgnoreCase("1") ? "0" : "1";
 
-                            getMahasiswa(nrp, email, "1", prodi, angkatan, updateToken(nrp));
+                            getAturanAktif(nrp, email, kategori, prodi, angkatan, updateToken(nrp));
                         } else {
                             deleteAccount();
                         }
@@ -139,6 +141,27 @@ public class SplashScreenActivity extends AppCompatActivity {
                         doSignIn();
                     }
                 });
+    }
+
+    public void getAturanAktif(String nrp, String email, String kategori, String prodi, String angkatan, String token) {
+        viewModel.getAturanAktif(
+                kategori
+        ).observe(this, new Observer<AturanResponse>() {
+            @Override
+            public void onChanged(AturanResponse aturanResponse) {
+                if (aturanResponse != null) {
+                    if (aturanResponse.status) {
+                        getMahasiswa(nrp, email, aturanResponse.data.idAturan, prodi, angkatan, updateToken(nrp));
+                    } else {
+                        Toast.makeText(SplashScreenActivity.this, "Tidak ada aturan tugas khusus yang aktif, segera hubungi admin", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                } else {
+                    Toast.makeText(SplashScreenActivity.this, "Tidak ada aturan tugas khusus yang aktif, segera hubungi admin", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
     }
 
     public void getMahasiswa(String nrp, String email, String aturan, String prodi, String angkatan, String token) {

@@ -307,6 +307,30 @@ public class OnlineRepository {
         return data;
     }
 
+    public MutableLiveData<AturanResponse> getAturanAktif(String kategori) {
+        MutableLiveData<AturanResponse> data = new MutableLiveData<>();
+        apiInterface.getAturanAktif(
+                kategori
+        ).enqueue(new Callback<AturanResponse>() {
+            @Override
+            public void onResponse(Call<AturanResponse> call, Response<AturanResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AturanResponse> call, Throwable t) {
+                Log.e("getAturanAktif", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
     public MutableLiveData<NilaiResponse> getNilai(String id) {
         MutableLiveData<NilaiResponse> data = new MutableLiveData<>();
         apiInterface.getNilai(
@@ -616,6 +640,30 @@ public class OnlineRepository {
             @Override
             public void onFailure(Call<EventResponse> call, Throwable t) {
                 Log.e("getDetailEvent", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<EventResponse> getEventUser(String email) {
+        MutableLiveData<EventResponse> data = new MutableLiveData<>();
+        apiInterface.getEventUser(
+                email
+        ).enqueue(new Callback<EventResponse>() {
+            @Override
+            public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EventResponse> call, Throwable t) {
+                Log.e("getEventUser", t.getMessage());
                 data.postValue(null);
             }
         });

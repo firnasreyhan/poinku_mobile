@@ -22,4 +22,10 @@ public class DaftarEventViewModel extends AndroidViewModel {
     public MutableLiveData<EventResponse> getEvent() {
         return onlineRepository.getEvent();
     }
+
+    public MutableLiveData<EventResponse> getEventUser(String email) {
+        return onlineRepository.getEventUser(
+                email
+        );
+    }
 }

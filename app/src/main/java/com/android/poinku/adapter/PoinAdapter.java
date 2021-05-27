@@ -39,6 +39,16 @@ public class PoinAdapter extends RecyclerView.Adapter<PoinAdapter.ViewHolder> {
         return list.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textViewJenis, textViewLingkup, textViewPeran, textViewPoin;
         public ViewHolder(@NonNull View itemView) {

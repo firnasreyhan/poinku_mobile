@@ -70,4 +70,15 @@ public class TabAdapter extends FragmentStatePagerAdapter {
         tabImageView.setColorFilter(ContextCompat.getColor(context, R.color.primary), PorterDuff.Mode.SRC_ATOP);
         return view;
     }
+
+    public View getSelectedWhiteTabView(int position) {
+        View view = LayoutInflater.from(context).inflate(R.layout.custom_tab, null);
+        TextView tabTextView = view.findViewById(R.id.tabTextView);
+        tabTextView.setText(mFragmentTitleList.get(position));
+        tabTextView.setTextColor(ContextCompat.getColor(context, R.color.white));
+        ImageView tabImageView = view.findViewById(R.id.tabImageView);
+        tabImageView.setImageResource(mFragmentIconList.get(position));
+        tabImageView.setColorFilter(ContextCompat.getColor(context, R.color.white), PorterDuff.Mode.SRC_ATOP);
+        return view;
+    }
 }

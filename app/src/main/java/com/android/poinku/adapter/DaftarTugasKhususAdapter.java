@@ -42,6 +42,16 @@ public class DaftarTugasKhususAdapter extends RecyclerView.Adapter<DaftarTugasKh
         return list.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textViewJenisKegiatan, textViewJumlahPoin, textViewJumlahKegiatan;
         public ViewHolder(@NonNull View itemView) {
