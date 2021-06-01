@@ -22,6 +22,9 @@ public class MahasiswaResponse extends BaseResponse {
         @SerializedName("KETERANGAN")
         public String keterangan;
 
+        @SerializedName("NAMA")
+        public String nama;
+
         @SerializedName("PRODI")
         public String prodi;
 
