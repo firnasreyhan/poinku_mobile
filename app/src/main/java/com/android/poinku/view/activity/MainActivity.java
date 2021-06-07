@@ -105,6 +105,13 @@ public class MainActivity extends AppCompatActivity {
                 binding.textViewStatusValidasi.setText("Belum Divalidasi");
             }
         });
+
+        binding.shapeableImageViewProfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(v.getContext(), ProfileActivity.class));
+            }
+        });
     }
 
     public void getMahasiswa() {

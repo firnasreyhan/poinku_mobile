@@ -19,7 +19,10 @@ public class PresensiResponse extends BaseResponse {
         @SerializedName("STATUS")
         public String status;
 
-        @SerializedName("WAKTU_PRESENSI")
-        public String waktuPresensi;
+        @SerializedName("SERTIFIKAT")
+        public String sertifikat;
+
+        @SerializedName("IS_SEEN")
+        public String isSeen;
     }
 }

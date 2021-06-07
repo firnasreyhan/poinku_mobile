@@ -156,6 +156,7 @@ public interface ApiInterface {
             @Field("nrp") String nrp,
             @Field("email") String email,
             @Field("aturan") String aturan,
+            @Field("nama") String nama,
             @Field("prodi") String prodi,
             @Field("angkatan") String angkatan,
             @Field("token") String token
@@ -206,6 +207,20 @@ public interface ApiInterface {
     Call<BaseResponse> putPengajuanTugasKhusus(
             @Field("nrp") String nrp,
             @Field("nilai") String nilai
+    );
+
+    @PUT("Event/absen")
+    @FormUrlEncoded
+    Call<BaseResponse> putAbsensi(
+            @Field("nrp") String nrp,
+            @Field("email") String email,
+            @Field("id") String id
+    );
+
+    @PUT("Mahasiswa/removeToken")
+    @FormUrlEncoded
+    Call<BaseResponse> putRemoveToken(
+            @Field("nrp") String nrp
     );
 //    @POST("user/login")
 //    @FormUrlEncoded

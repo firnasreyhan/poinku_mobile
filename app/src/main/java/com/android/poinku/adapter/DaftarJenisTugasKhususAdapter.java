@@ -34,7 +34,7 @@ public class DaftarJenisTugasKhususAdapter extends RecyclerView.Adapter<DaftarJe
         holder.textViewJudul.setText(list.get(position).judul);
         holder.textViewLingkup.setText(list.get(position).lingkup);
         holder.textViewPeran.setText(list.get(position).peran);
-        holder.textViewPoin.setText(list.get(position).poin);
+        holder.textViewPoin.setText(list.get(position).poin == null ? "0" : list.get(position).poin);
     }
 
     @Override

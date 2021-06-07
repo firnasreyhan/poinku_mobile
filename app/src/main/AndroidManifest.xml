@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Poinku"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.DetailEventActivity"></activity>
+        <activity android:name=".view.activity.SertifikatActivity"></activity>
+        <activity android:name=".view.activity.ProfileActivity" />
+        <activity android:name=".view.activity.StatusAbsenActivity" />
+        <activity android:name=".view.activity.DetailEventActivity" />
         <activity android:name=".view.activity.DaftarEventActivity" />
         <activity android:name=".view.activity.KriteriaActivity" />
         <activity android:name=".view.activity.InformasiActivity" />

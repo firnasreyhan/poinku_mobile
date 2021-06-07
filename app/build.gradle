@@ -90,4 +90,7 @@ dependencies {
 
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //QRCodeScanner
+    implementation 'com.github.blikoon:QRCodeScanner:0.1.2'
 }

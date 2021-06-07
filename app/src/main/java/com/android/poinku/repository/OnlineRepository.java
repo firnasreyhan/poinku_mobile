@@ -427,12 +427,13 @@ public class OnlineRepository {
         return data;
     }
 
-    public MutableLiveData<MahasiswaResponse> postMahasiswa(String nrp, String email, String aturan, String prodi, String angkatan, String token) {
+    public MutableLiveData<MahasiswaResponse> postMahasiswa(String nrp, String email, String aturan, String nama, String prodi, String angkatan, String token) {
         MutableLiveData<MahasiswaResponse> data = new MutableLiveData<>();
         apiInterface.postMahasiswa(
                 nrp,
                 email,
                 aturan,
+                nama,
                 prodi,
                 angkatan,
                 token
@@ -739,6 +740,56 @@ public class OnlineRepository {
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 Log.e("putPengajuanTugasKhusus", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<BaseResponse> putAbsensi(String nrp, String email, String id) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        apiInterface.putAbsensi(
+                nrp,
+                email,
+                id
+        ).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("putAbsensi", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<BaseResponse> putRemoveToken(String nrp) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        apiInterface.putRemoveToken(
+                nrp
+        ).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("putRemoveToken", t.getMessage());
                 data.postValue(null);
             }
         });

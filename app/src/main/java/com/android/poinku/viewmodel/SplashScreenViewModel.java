@@ -19,11 +19,12 @@ public class SplashScreenViewModel extends AndroidViewModel {
         onlineRepository = new OnlineRepository();
     }
 
-    public MutableLiveData<MahasiswaResponse> postMahasiswa(String nrp, String email, String aturan, String prodi, String angkatan, String token) {
+    public MutableLiveData<MahasiswaResponse> postMahasiswa(String nrp, String email, String aturan, String nama, String prodi, String angkatan, String token) {
         return onlineRepository.postMahasiswa(
                 nrp,
                 email,
                 aturan,
+                nama,
                 prodi,
                 angkatan,
                 token

@@ -47,4 +47,12 @@ public class DetailEventViewModel extends AndroidViewModel {
                 id
         );
     }
+
+    public MutableLiveData<BaseResponse> putAbsensi(String nrp, String email, String id) {
+        return onlineRepository.putAbsensi(
+                nrp,
+                email,
+                id
+        );
+    }
 }
