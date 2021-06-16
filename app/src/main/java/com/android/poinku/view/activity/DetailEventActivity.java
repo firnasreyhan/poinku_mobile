@@ -39,6 +39,7 @@ public class DetailEventActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     private String idEvent, url;
+    private boolean isKuotaFull;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,25 +62,29 @@ public class DetailEventActivity extends AppCompatActivity {
         binding.materialButtonDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(v.getContext())
-                        .setTitle("Pesan")
-                        .setMessage("Apakah anda yakin ingin mengikuti kegiatan ini?")
-                        .setCancelable(false)
-                        .setPositiveButton("Iya", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                postDaftarEvent();
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .create()
-                        .show();
+                if (isKuotaFull) {
+                    alert("Kuota pendaftar telah terpenuhi, silahkan mendaftar event lain");
+                } else {
+                    new AlertDialog.Builder(v.getContext())
+                            .setTitle("Pesan")
+                            .setMessage("Apakah anda yakin ingin mengikuti kegiatan ini?")
+                            .setCancelable(false)
+                            .setPositiveButton("Iya", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    postDaftarEvent();
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create()
+                            .show();
+                }
             }
         });
 
@@ -188,6 +193,7 @@ public class DetailEventActivity extends AppCompatActivity {
         progressDialog.show();
         viewModel.postDaftarEvent(
                 AppPreference.getUser(this).email,
+                AppPreference.getUser(this).nama,
                 idEvent
         ).observe(this, new Observer<BaseResponse>() {
             @Override
@@ -274,6 +280,12 @@ public class DetailEventActivity extends AppCompatActivity {
                         binding.textViewPendaftar.setText("Pendaftar " + event.pendaftar + " Orang");
                         binding.textViewKuota.setText("Kuota " + event.kuota + " Orang");
                         binding.textViewDeskripsi.setText(event.deskripsi);
+
+                        if (Integer.parseInt(event.pendaftar) < Integer.parseInt(event.kuota)) {
+                            isKuotaFull = false;
+                        } else {
+                            isKuotaFull = true;
+                        }
                     }
                 }
             }
@@ -316,21 +328,31 @@ public class DetailEventActivity extends AppCompatActivity {
         });
     }
 
-    public void putAbsensi(String idEvent) {
-        viewModel.putAbsensi(
-                AppPreference.getUser(this).nrp,
-                AppPreference.getUser(this).email,
-                idEvent
-        ).observe(this, new Observer<BaseResponse>() {
-            @Override
-            public void onChanged(BaseResponse baseResponse) {
-                if (baseResponse != null) {
-                    Intent intent = new Intent(DetailEventActivity.this, StatusAbsenActivity.class);
-                    intent.putExtra("STATUS", baseResponse.status);
-                    startActivity(intent);
-                }
-            }
-        });
+    public void putAbsensi(String link) {
+        String pattern = "https://poinku.my.id/kuesionerKegiatan/";
+        String idEvent = link.substring(pattern.length());
+
+        if (this.idEvent.equalsIgnoreCase(idEvent)) {
+            Intent intent = new Intent(this, KuesionerActivity.class);
+            intent.putExtra("ID_EVENT", idEvent);
+            startActivity(intent);
+        } else {
+            alert("QR Code tidak sesuai, silahkan coba lagi");
+        }
+//        viewModel.putAbsensi(
+//                AppPreference.getUser(this).nrp,
+//                AppPreference.getUser(this).email,
+//                idEvent
+//        ).observe(this, new Observer<BaseResponse>() {
+//            @Override
+//            public void onChanged(BaseResponse baseResponse) {
+//                if (baseResponse != null) {
+//                    Intent intent = new Intent(DetailEventActivity.this, StatusAbsenActivity.class);
+//                    intent.putExtra("STATUS", baseResponse.status);
+//                    startActivity(intent);
+//                }
+//            }
+//        });
     }
 
     public void alert(String pesan) {

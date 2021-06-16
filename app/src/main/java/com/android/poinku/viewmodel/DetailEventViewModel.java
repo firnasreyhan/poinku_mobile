@@ -21,9 +21,10 @@ public class DetailEventViewModel extends AndroidViewModel {
         onlineRepository = new OnlineRepository();
     }
 
-    public MutableLiveData<BaseResponse> postDaftarEvent(String email, String id) {
+    public MutableLiveData<BaseResponse> postDaftarEvent(String email, String nama, String id) {
         return onlineRepository.postDaftarEvent(
                 email,
+                nama,
                 id
         );
     }
@@ -53,6 +54,19 @@ public class DetailEventViewModel extends AndroidViewModel {
                 nrp,
                 email,
                 id
+        );
+    }
+
+    public MutableLiveData<BaseResponse> postKuesioner(String email, String id, int jwb1, int jwb2, int jwb3, int jwb4, int jwb5, String saran) {
+        return onlineRepository.postKuesioner(
+                email,
+                id,
+                jwb1,
+                jwb2,
+                jwb3,
+                jwb4,
+                jwb5,
+                saran
         );
     }
 }

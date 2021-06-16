@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    tools:context=".view.activity.KuesionerActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans_bold"
+                android:gravity="left|center_vertical"
+                android:text="Kuesioner"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/white" />
+
+        </FrameLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_13sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans_bold"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:text="Bagaimana tanggapan Anda tentang materi pada kegiatan ini?"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroup1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radioButton11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Sangat menarik"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Menarik"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Biasa"
+                    android:checked="true"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton14"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Kurang menarik"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Sangat kurang menarik"/>
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/open_sans_bold"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:text="Bagaimana tanggapan Anda tentang pemateri?"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroup2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radioButton21"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Sangat baik"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton22"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Baik"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton23"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Cukup"
+                    android:checked="true"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Kurang"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Sangat kurang"/>
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/open_sans_bold"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:text="Menurut Anda apakah kegiatan ini bermanfaat?"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroup3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radioButton31"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Iya"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton32"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Mungkin"
+                    android:checked="true"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton33"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Tidak"/>
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/open_sans_bold"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:text="Apakah dengan mengikuti kegiatan ini dapat menambah wawasan Anda? "/>
+
+            <RadioGroup
+                android:id="@+id/radioGroup4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radioButton41"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Iya"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton42"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Mungkin"
+                    android:checked="true"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton43"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Tidak"/>
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/open_sans_bold"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:text="Bagaimana tanggapan Anda terkait pelaksanaan kegiatan ini?"/>
+
+            <RadioGroup
+                android:id="@+id/radioGroup5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/radioButton51"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Sangat baik"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton52"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Baik"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton53"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Cukup"
+                    android:checked="true"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton54"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Kurang"/>
+
+                <RadioButton
+                    android:id="@+id/radioButton55"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans_light"
+                    android:textSize="@dimen/_8sdp"
+                    android:textColor="@color/black"
+                    android:text="Sangat kurang"/>
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/open_sans_bold"
+                android:textAllCaps="true"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/black"
+                android:text="Saran"/>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:cardCornerRadius="@dimen/_20sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_13sdp"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/editTextSaran"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_75sdp"
+                        android:backgroundTint="@color/primary"
+                        android:gravity="left|top"
+                        android:hint="Saran"
+                        android:fontFamily="@font/open_sans_light"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_8sdp" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/materialButtonKirim"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_26sdp"
+                android:padding="@dimen/_13sdp"
+                app:cornerRadius="@dimen/_20sdp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/open_sans_bold"
+                android:textAllCaps="false"
+                android:text="Kirim"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

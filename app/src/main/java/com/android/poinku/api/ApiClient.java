@@ -31,7 +31,8 @@ public class ApiClient {
 
             retrofit = new Retrofit.Builder()
                     .client(okHttpClient)
-                    .baseUrl("http://s4ishoku.site/new_poinku/api/")
+                    .baseUrl("https://poinku.my.id/api/")
+//                    .baseUrl("http://192.168.1.9/poinku/api/")
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(builder))
                     .build();

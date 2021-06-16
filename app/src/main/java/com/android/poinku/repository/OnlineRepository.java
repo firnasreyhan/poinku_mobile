@@ -672,10 +672,11 @@ public class OnlineRepository {
         return data;
     }
 
-    public MutableLiveData<BaseResponse> postDaftarEvent(String email, String id) {
+    public MutableLiveData<BaseResponse> postDaftarEvent(String email, String nama, String id) {
         MutableLiveData<BaseResponse> data = new MutableLiveData<>();
         apiInterface.postDaftarEvent(
                 email,
+                nama,
                 id
         ).enqueue(new Callback<BaseResponse>() {
             @Override
@@ -766,6 +767,37 @@ public class OnlineRepository {
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 Log.e("putAbsensi", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<BaseResponse> postKuesioner(String email, String id, int jwb1, int jwb2, int jwb3, int jwb4, int jwb5, String saran) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        apiInterface.postKuesioner(
+                email,
+                id,
+                jwb1,
+                jwb2,
+                jwb3,
+                jwb4,
+                jwb5,
+                saran
+        ).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("postKuesioner", t.getMessage());
                 data.postValue(null);
             }
         });

@@ -16,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Poinku"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.SertifikatActivity"></activity>
+        <activity android:name=".view.activity.KuesionerActivity"></activity>
+        <activity android:name=".view.activity.SertifikatActivity" />
         <activity android:name=".view.activity.ProfileActivity" />
         <activity android:name=".view.activity.StatusAbsenActivity" />
         <activity android:name=".view.activity.DetailEventActivity" />
