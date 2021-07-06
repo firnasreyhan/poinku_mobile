@@ -23,6 +23,7 @@ import com.android.poinku.api.response.TugasKhususResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -33,19 +34,37 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
-    @GET("jenis")
+    @GET("Jenis")
     Call<JenisResponse> getJenis();
 
-    @GET("lingkup")
-    Call<LingkupResponse> getLingkup();
+    @GET("Lingkup/data")
+    Call<LingkupResponse> getLingkup(
+            @Query("idAturan") String idAturan,
+            @Query("idJenis") String idJenis
+    );
 
-    @GET("peran")
-    Call<PeranResponse> getPeran();
+    @GET("Peran/data")
+    Call<PeranResponse> getPeran(
+            @Query("idAturan") String idAturan,
+            @Query("idJenis") String idJenis,
+            @Query("idLingkup") String idLingkup
+    );
 
     @FormUrlEncoded
     @POST("TugasKhusus")
     Call<TugasKhususResponse> postTugasKhusus(
             @Field("nrp") String nrp,
+            @Field("jenis") String jenis,
+            @Field("lingkup") String lingkup,
+            @Field("peran") String peran,
+            @Field("judul") String judul,
+            @Field("tanggal") String tanggal
+    );
+
+    @FormUrlEncoded
+    @POST("TugasKhusus/updateTugasKhusus")
+    Call<BaseResponse> postUpdateTugasKhusus(
+            @Field("id_tugas_khusus") String idTugasKhusus,
             @Field("jenis") String jenis,
             @Field("lingkup") String lingkup,
             @Field("peran") String peran,
@@ -64,6 +83,21 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("TugasKhusus/kegiatan")
     Call<BaseResponse> postKegiatan(
+            @Field("id_tugas_khusus") String idTugasKhusus,
+            @Field("keterangan") String keterangan
+    );
+
+    @FormUrlEncoded
+    @POST("TugasKhusus/updateKonten")
+    Call<BaseResponse> postUpdateKonten(
+            @Field("id_tugas_khusus") String idTugasKhusus,
+            @Field("media") String media,
+            @Field("jenis") String jenis
+    );
+
+    @FormUrlEncoded
+    @POST("TugasKhusus/updateKegiatan")
+    Call<BaseResponse> postUpdateKegiatan(
             @Field("id_tugas_khusus") String idTugasKhusus,
             @Field("keterangan") String keterangan
     );
@@ -88,6 +122,17 @@ public interface ApiInterface {
     Call<DataPoinResponse> getDataPoin(
             @Query("nrp") String nrp,
             @Query("jenis") String jenis
+    );
+
+    @GET("TugasKhusus/isValidasi")
+    Call<BaseResponse> getIsValidasi(
+            @Query("nrp") String nrp
+    );
+
+    @FormUrlEncoded
+    @POST("TugasKhusus/deleteTugasKhusus")
+    Call<BaseResponse> postDeleteTugasKhusus(
+            @Field("id") String id
     );
 
     @GET("TugasKhusus/totalPoin")

@@ -126,6 +126,7 @@ public class DetailEventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), SertifikatActivity.class);
                 intent.putExtra("URL", url);
+                startActivity(intent);
             }
         });
     }
@@ -260,7 +261,7 @@ public class DetailEventActivity extends AppCompatActivity {
 
                         Picasso.get()
                                 .load(event.poster)
-                                .placeholder(R.drawable.ic_logi_stiki)
+                                .placeholder(R.drawable.no_image)
                                 .into(binding.imageViewPoster);
                         binding.textViewJudul.setText(event.judul);
 

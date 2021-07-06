@@ -13,11 +13,16 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.poinku.api.response.BaseResponse;
+import com.android.poinku.api.response.DetailTugasKhususResponse;
 import com.android.poinku.api.response.JenisResponse;
+import com.android.poinku.api.response.KegiatanResponse;
+import com.android.poinku.api.response.KontenResponse;
 import com.android.poinku.api.response.LingkupResponse;
 import com.android.poinku.api.response.PeranResponse;
 import com.android.poinku.api.response.TugasKhususResponse;
 import com.android.poinku.repository.OnlineRepository;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -29,14 +34,32 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
-public class CatatViewModel extends AndroidViewModel {
-    private final OnlineRepository onlineRepository;
+public class UpdateTugasKhususViewModel extends AndroidViewModel {
+    private OnlineRepository onlineRepository;
     private Context context;
 
-    public CatatViewModel(@NonNull Application application) {
+    public UpdateTugasKhususViewModel(@NonNull @NotNull Application application) {
         super(application);
         onlineRepository = new OnlineRepository();
         context = application.getApplicationContext();
+    }
+
+    public MutableLiveData<DetailTugasKhususResponse> getDetailTugasKhusus(String idTugasKhusus) {
+        return onlineRepository.getDetailTugasKhusus(
+                idTugasKhusus
+        );
+    }
+
+    public MutableLiveData<KegiatanResponse> getKegiatan(String idTugasKhusus) {
+        return onlineRepository.getKegiatan(
+                idTugasKhusus
+        );
+    }
+
+    public MutableLiveData<KontenResponse> getKonten(String idTugasKhusus) {
+        return onlineRepository.getKonten(
+                idTugasKhusus
+        );
     }
 
     public MutableLiveData<JenisResponse> getJenis() {
@@ -58,9 +81,9 @@ public class CatatViewModel extends AndroidViewModel {
         );
     }
 
-    public MutableLiveData<TugasKhususResponse> postTugasKhusus(String nrp, String jenis, String lingkup, String peran, String judul, String tanggal) {
-        return onlineRepository.postTugasKhusus(
-                nrp,
+    public MutableLiveData<BaseResponse> postUpdateTugasKhusus(String idTugasKhusus, String jenis, String lingkup, String peran, String judul, String tanggal) {
+        return onlineRepository.postUpdateTugasKhusus(
+                idTugasKhusus,
                 jenis,
                 lingkup,
                 peran,
@@ -69,16 +92,16 @@ public class CatatViewModel extends AndroidViewModel {
         );
     }
 
-    public MutableLiveData<BaseResponse> postKonten(String idTugasKhusus, String media, String jenis) {
-        return onlineRepository.postKonten(
+    public MutableLiveData<BaseResponse> postUpdateKonten(String idTugasKhusus, String media, String jenis) {
+        return onlineRepository.postUpdateKonten(
                 idTugasKhusus,
                 media,
                 jenis
         );
     }
 
-    public MutableLiveData<BaseResponse> postKegiatan(String idTugasKhusus, String keterangan) {
-        return onlineRepository.postKegiatan(
+    public MutableLiveData<BaseResponse> postUpdateKegiatan(String idTugasKhusus, String keterangan) {
+        return onlineRepository.postUpdateKegiatan(
                 idTugasKhusus,
                 keterangan
         );

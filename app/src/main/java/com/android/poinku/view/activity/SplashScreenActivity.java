@@ -94,7 +94,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                             String kategori = nrp.substring(5,6).equalsIgnoreCase("1") ? "0" : "1";
 
 //                            getAturanAktif(nrp, email, kategori, prodi, angkatan, updateToken(nrp));
-                            getMahasiswa(nrp, email, kategori, prodi, nama, angkatan, updateToken(nrp));
+                            getMahasiswa(nrp, email, kategori, nama, prodi, angkatan, updateToken(nrp));
                         } else {
                             deleteAccount();
                         }
@@ -154,7 +154,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 });
     }
 
-    public void getMahasiswa(String nrp, String email, String kategori, String prodi, String nama, String angkatan, String token) {
+    public void getMahasiswa(String nrp, String email, String kategori, String nama, String prodi, String angkatan, String token) {
         viewModel.getMahasiswa(
                 nrp
         ).observe(this, new Observer<MahasiswaResponse>() {
@@ -169,14 +169,14 @@ public class SplashScreenActivity extends AppCompatActivity {
                         startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
                         finish();
                     } else {
-                        getAturanAktif(nrp, email, kategori, prodi, nama, angkatan, token);
+                        getAturanAktif(nrp, email, kategori, nama, prodi, angkatan, token);
                     }
                 }
             }
         });
     }
 
-    public void getAturanAktif(String nrp, String email, String kategori, String prodi, String nama, String angkatan, String token) {
+    public void getAturanAktif(String nrp, String email, String kategori, String nama, String prodi, String angkatan, String token) {
         viewModel.getAturanAktif(
                 kategori
         ).observe(this, new Observer<AturanResponse>() {
@@ -184,7 +184,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void onChanged(AturanResponse aturanResponse) {
                 if (aturanResponse != null) {
                     if (aturanResponse.status) {
-                        postMahasiswa(nrp, email, aturanResponse.data.idAturan, prodi, nama, angkatan, token);
+                        postMahasiswa(nrp, email, aturanResponse.data.idAturan, nama, prodi, angkatan, token);
                     } else {
                         doSignOut();
                         Toast.makeText(SplashScreenActivity.this, "Tidak ada aturan tugas khusus yang aktif, segera hubungi admin", Toast.LENGTH_SHORT).show();
@@ -200,6 +200,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     public void postMahasiswa(String nrp, String email, String aturan, String nama, String prodi, String angkatan, String token) {
+        Log.e("nama", nama);
         viewModel.postMahasiswa(
                 nrp,
                 email,

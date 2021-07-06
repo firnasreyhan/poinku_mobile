@@ -60,6 +60,7 @@ public class NilaiAdapter extends RecyclerView.Adapter<NilaiAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), KriteriaActivity.class);
+                    intent.putExtra("ID_NILAI", list.get(getAdapterPosition()).idNilai);
                     intent.putExtra("NILAI", list.get(getAdapterPosition()).nilai);
                     intent.putExtra("POIN_MINIMAL", list.get(getAdapterPosition()).poinMinimal);
                     v.getContext().startActivity(intent);

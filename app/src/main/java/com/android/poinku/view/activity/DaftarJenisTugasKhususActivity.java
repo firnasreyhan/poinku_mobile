@@ -16,6 +16,7 @@ import com.android.poinku.adapter.DaftarTugasKhususAdapter;
 import com.android.poinku.api.response.DataPoinResponse;
 import com.android.poinku.api.response.JenisTugasKhususResponse;
 import com.android.poinku.databinding.ActivityDaftarJenisTugasKhususBinding;
+import com.android.poinku.preference.AppPreference;
 import com.android.poinku.viewmodel.DaftarJenisTugasKhususViewModel;
 
 public class DaftarJenisTugasKhususActivity extends AppCompatActivity {
@@ -56,8 +57,6 @@ public class DaftarJenisTugasKhususActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setHasFixedSize(true);
 
-        getDataPoin();
-
         binding.swiperRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -90,12 +89,13 @@ public class DaftarJenisTugasKhususActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         binding.shimmerFrameLayout.startShimmer();
+        getDataPoin();
     }
 
     public void getDataPoin() {
         binding.shimmerFrameLayout.startShimmer();
         viewModel.getDataPoin(
-                "171111079",
+                AppPreference.getUser(this).nrp,
                 idJenis
         ).observe(this, new Observer<DataPoinResponse>() {
             @Override

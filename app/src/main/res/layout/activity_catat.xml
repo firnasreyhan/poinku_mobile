@@ -338,20 +338,20 @@
 
             </LinearLayout>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/materialButtonSimpan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:padding="@dimen/_13sdp"
+                app:cornerRadius="@dimen/_20sdp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/open_sans_bold"
+                android:textAllCaps="false"
+                android:text="Simpan"/>
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButtonSimpan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_13sdp"
-        android:padding="@dimen/_13sdp"
-        app:cornerRadius="@dimen/_20sdp"
-        android:textColor="@color/white"
-        android:fontFamily="@font/open_sans_bold"
-        android:textAllCaps="false"
-        android:text="Simpan"/>
 
 </LinearLayout>

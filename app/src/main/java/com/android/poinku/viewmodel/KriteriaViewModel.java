@@ -17,9 +17,9 @@ public class KriteriaViewModel extends AndroidViewModel {
         onlineRepository = new OnlineRepository();
     }
 
-    public MutableLiveData<KriteriaResponse> getKriteria(String idAturan) {
+    public MutableLiveData<KriteriaResponse> getKriteria(String idNilai) {
         return onlineRepository.getKriteria(
-                idAturan
+                idNilai
         );
     }
 }

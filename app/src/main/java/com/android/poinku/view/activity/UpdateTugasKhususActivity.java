@@ -22,35 +22,46 @@ import android.widget.Toast;
 
 import com.android.poinku.R;
 import com.android.poinku.api.response.BaseResponse;
+import com.android.poinku.api.response.DetailTugasKhususResponse;
 import com.android.poinku.api.response.JenisResponse;
+import com.android.poinku.api.response.KegiatanResponse;
+import com.android.poinku.api.response.KontenResponse;
 import com.android.poinku.api.response.LingkupResponse;
 import com.android.poinku.api.response.PeranResponse;
 import com.android.poinku.api.response.TugasKhususResponse;
-import com.android.poinku.databinding.ActivityCatatBinding;
+import com.android.poinku.databinding.ActivityUpdateTugasKhususBinding;
 import com.android.poinku.preference.AppPreference;
 import com.android.poinku.viewmodel.CatatViewModel;
+import com.android.poinku.viewmodel.UpdateTugasKhususViewModel;
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
-public class CatatActivity extends AppCompatActivity {
-    private ActivityCatatBinding binding;
-    private CatatViewModel viewModel;
+public class UpdateTugasKhususActivity extends AppCompatActivity {
+    private ActivityUpdateTugasKhususBinding binding;
+    private UpdateTugasKhususViewModel viewModel;
     private ProgressDialog progressDialog;
 
-    private String tanggal, jenis, namaJenis, peran, lingkup, mediaK, jenisK;
+    private String tanggal, jenis, namaJenis, peran, lingkup, mediaK, jenisK, idTugasKusus, idLingkup, idPeran;
     private boolean isKonten;
     private Uri uri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCatatBinding.inflate(getLayoutInflater());
+        binding = ActivityUpdateTugasKhususBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        viewModel = ViewModelProviders.of(this).get(CatatViewModel.class);
+        idTugasKusus = getIntent().getStringExtra("ID_TUGAS_KHUSUS");
+        idLingkup = getIntent().getStringExtra("ID_LINGKUP");
+        idPeran = getIntent().getStringExtra("ID_PERAN");
+        viewModel = ViewModelProviders.of(this).get(UpdateTugasKhususViewModel.class);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Mohon tunggu sebentar...");
         progressDialog.setCancelable(false);
@@ -60,10 +71,12 @@ public class CatatActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        getJenis();
+//        getJenis();
 //        getLingkup();
 //        getPeran();
-        setKonten();
+
+        getDetailTugasKhusus();
+        setKonten("Blog", "Artikel");
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormatView = new SimpleDateFormat("dd MMMM yyyy", new Locale("id", "ID"));
@@ -93,7 +106,7 @@ public class CatatActivity extends AppCompatActivity {
         binding.imageViewBuktiKegiatan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImagePicker.Companion.with(CatatActivity.this)
+                ImagePicker.Companion.with(UpdateTugasKhususActivity.this)
                         .crop()
                         .compress(1024)
                         .start();
@@ -104,7 +117,7 @@ public class CatatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkData()) {
-                    postTugasKhusus();
+                    postUpdateTugasKhusus();
                 }
             }
         });
@@ -116,22 +129,119 @@ public class CatatActivity extends AppCompatActivity {
         return true;
     }
 
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        getDetailTugasKhusus();
+//    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            binding.imageViewBuktiKegiatan.setImageURI(data.getData());
+//            binding.imageViewBuktiKegiatan.setImageURI(data.getData());
+            Picasso.get()
+                    .load(data.getData())
+                    .placeholder(R.drawable.no_image)
+                    .error(R.drawable.no_image)
+                    .into(binding.imageViewBuktiKegiatan);
             uri = data.getData();
         }
     }
 
-    public void getJenis() {
+    public void getDetailTugasKhusus() {
+        viewModel.getDetailTugasKhusus(
+                idTugasKusus
+        ).observe(this, new Observer<DetailTugasKhususResponse>() {
+            @Override
+            public void onChanged(DetailTugasKhususResponse detailTugasKhususResponse) {
+                if (detailTugasKhususResponse != null) {
+                    if (detailTugasKhususResponse.status) {
+                        tanggal = detailTugasKhususResponse.data.tanggalKegiatan;
+                        binding.editTextJudul.setText(detailTugasKhususResponse.data.judul);
+
+                        String nmyFormat = "dd MMMM yyyy"; //In which you need put here
+                        SimpleDateFormat nsdf = new SimpleDateFormat(nmyFormat, new Locale("id", "ID"));
+                        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        try {
+                            Date date = format.parse(detailTugasKhususResponse.data.tanggalKegiatan);
+                            binding.editTextTanggalKegiatan.setText(nsdf.format(date));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        getJenis(detailTugasKhususResponse.data.idJenis);
+//                        binding.editTextJenis.setText(detailTugasKhususResponse.data.jenis);
+
+                        if (!detailTugasKhususResponse.data.idJenis.equalsIgnoreCase("14")) {
+                            binding.linearLayoutBukanKonten.setVisibility(View.VISIBLE);
+                            binding.linearLayoutKonten.setVisibility(View.GONE);
+
+                            getLingkup(detailTugasKhususResponse.data.idJenis, detailTugasKhususResponse.data.idLingkup);
+                            getPeran(detailTugasKhususResponse.data.idJenis, detailTugasKhususResponse.data.idLingkup, detailTugasKhususResponse.data.idPeran);
+//                            binding.editTextLingkup.setText(detailTugasKhususResponse.data.lingkup);
+//                            binding.editTextPeran.setText(detailTugasKhususResponse.data.peran);
+
+                            Picasso.get()
+                                    .load(detailTugasKhususResponse.data.bukti)
+                                    .placeholder(R.drawable.no_image)
+                                    .error(R.drawable.no_image)
+                                    .into(binding.imageViewBuktiKegiatan);
+
+                            getKegiatan();
+                        } else {
+                            binding.linearLayoutBukanKonten.setVisibility(View.GONE);
+                            binding.linearLayoutKonten.setVisibility(View.VISIBLE);
+
+                            binding.editTextLinkKonten.setText(detailTugasKhususResponse.data.bukti);
+
+                            getKonten();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public void getKegiatan() {
+        viewModel.getKegiatan(
+                idTugasKusus
+        ).observe(this, new Observer<KegiatanResponse>() {
+            @Override
+            public void onChanged(KegiatanResponse kegiatanResponse) {
+                if (kegiatanResponse != null) {
+                    if (kegiatanResponse.status) {
+                        binding.editTextPenyelenggaraPembicara.setText(kegiatanResponse.data.keterangan);
+                    }
+                }
+            }
+        });
+    }
+
+    public void getKonten() {
+        viewModel.getKonten(
+                idTugasKusus
+        ).observe(this, new Observer<KontenResponse>() {
+            @Override
+            public void onChanged(KontenResponse kontenResponse) {
+                if (kontenResponse != null) {
+                    if (kontenResponse.status) {
+//                        binding.editTextJenisKonten.setText(kontenResponse.data.jenisKonten);
+//                        binding.editTextMediaKonten.setText(kontenResponse.data.mediaKonten);
+                        setKonten(kontenResponse.data.mediaKonten, kontenResponse.data.jenisKonten);
+                    }
+                }
+            }
+        });
+    }
+
+    public void getJenis(String idJenis) {
         viewModel.getJenis().observe(this, new Observer<JenisResponse>() {
             @Override
             public void onChanged(JenisResponse jenisResponse) {
                 if (jenisResponse != null) {
                     if (jenisResponse.status) {
-                        ArrayAdapter<JenisResponse.JenisModel> adapter = new ArrayAdapter<>(CatatActivity.this, R.layout.item_spinner, jenisResponse.data);
+                        ArrayAdapter<JenisResponse.JenisModel> adapter = new ArrayAdapter<>(UpdateTugasKhususActivity.this, R.layout.item_spinner, jenisResponse.data);
                         binding.spinnerJenis.setAdapter(adapter);
 
                         binding.spinnerJenis.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -148,7 +258,7 @@ public class CatatActivity extends AppCompatActivity {
 
                                     isKonten = false;
 
-                                    getLingkup(jenisResponse.data.get(position).idJenis);
+                                    getLingkup(jenisResponse.data.get(position).idJenis, idLingkup);
                                 }
 
                                 jenis = jenisResponse.data.get(position).idJenis;
@@ -160,13 +270,23 @@ public class CatatActivity extends AppCompatActivity {
 
                             }
                         });
+
+                        Log.e("sIdjenis", String.valueOf(idJenis));
+                        for (int i = 0; i < jenisResponse.data.size(); i++) {
+                            Log.e("posisiIdJenis", jenisResponse.data.get(i).idJenis);
+                            if (jenisResponse.data.get(i).idJenis.equalsIgnoreCase(idJenis)) {
+                                binding.spinnerJenis.setSelection(i);
+                                Log.e("posisiIdJenis", String.valueOf(i));
+                                break;
+                            }
+                        }
                     }
                 }
             }
         });
     }
 
-    public void getLingkup(String idJenis) {
+    public void getLingkup(String idJenis, String idLingkup) {
         viewModel.getLingkup(
                 AppPreference.getUser(this).idAturan,
                 idJenis
@@ -175,15 +295,22 @@ public class CatatActivity extends AppCompatActivity {
             public void onChanged(LingkupResponse lingkupResponse) {
                 if (lingkupResponse != null) {
                     if (lingkupResponse.status) {
-                        ArrayAdapter<LingkupResponse.LingkupModel> adapter = new ArrayAdapter<>(CatatActivity.this, R.layout.item_spinner, lingkupResponse.data);
+                        ArrayAdapter<LingkupResponse.LingkupModel> adapter = new ArrayAdapter<>(UpdateTugasKhususActivity.this, R.layout.item_spinner, lingkupResponse.data);
                         binding.spinnerLingkup.setAdapter(adapter);
+
+                        for (int i = 0; i < lingkupResponse.data.size(); i++) {
+                            if (lingkupResponse.data.get(i).idLingkup.equalsIgnoreCase(idLingkup)) {
+                                binding.spinnerLingkup.setSelection(i);
+                                break;
+                            }
+                        }
 
                         binding.spinnerLingkup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 lingkup = lingkupResponse.data.get(position).idLingkup;
 
-                                getPeran(idJenis, lingkupResponse.data.get(position).idLingkup);
+                                getPeran(idJenis, idLingkup, idPeran);
                             }
 
                             @Override
@@ -197,7 +324,7 @@ public class CatatActivity extends AppCompatActivity {
         });
     }
 
-    public void getPeran(String idJenis, String idLingkup) {
+    public void getPeran(String idJenis, String idLingkup, String idPeran) {
         viewModel.getPeran(
                 AppPreference.getUser(this).idAturan,
                 idJenis,
@@ -207,8 +334,15 @@ public class CatatActivity extends AppCompatActivity {
             public void onChanged(PeranResponse peranResponse) {
                 if (peranResponse != null) {
                     if (peranResponse.status) {
-                        ArrayAdapter<PeranResponse.PeranModel> adapter = new ArrayAdapter<>(CatatActivity.this, R.layout.item_spinner, peranResponse.data);
+                        ArrayAdapter<PeranResponse.PeranModel> adapter = new ArrayAdapter<>(UpdateTugasKhususActivity.this, R.layout.item_spinner, peranResponse.data);
                         binding.spinnerPeran.setAdapter(adapter);
+
+                        for (int i = 0; i < peranResponse.data.size(); i++) {
+                            if (peranResponse.data.get(i).idPeran.equalsIgnoreCase(idPeran)) {
+                                binding.spinnerPeran.setSelection(i);
+                                break;
+                            }
+                        }
 
                         binding.spinnerPeran.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
@@ -227,7 +361,7 @@ public class CatatActivity extends AppCompatActivity {
         });
     }
 
-    public void setKonten() {
+    public void setKonten(String sMediaKonten, String sJenisKonten) {
         String[] mediaKonten = {"Blog", "Youtube", "Instagram", "Web Prodi / STIKI"};
         String[] jenisKonten = {"Artikel", "Video"};
 
@@ -236,6 +370,18 @@ public class CatatActivity extends AppCompatActivity {
 
         binding.spinnerMediaKonten.setAdapter(adapterMedia);
         binding.spinnerJenisKonten.setAdapter(adapterJenis);
+
+        for (int i = 0; i < mediaKonten.length; i++) {
+            if (mediaKonten[i].equalsIgnoreCase(sMediaKonten)) {
+                binding.spinnerMediaKonten.setSelection(i);
+            }
+        }
+
+        for (int i = 0; i < jenisKonten.length; i++) {
+            if (jenisKonten[i].equalsIgnoreCase(sJenisKonten)) {
+                binding.spinnerJenisKonten.setSelection(i);
+            }
+        }
 
         binding.spinnerMediaKonten.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -262,26 +408,26 @@ public class CatatActivity extends AppCompatActivity {
         });
     }
 
-    public void postTugasKhusus() {
+    public void postUpdateTugasKhusus() {
         progressDialog.show();
-        viewModel.postTugasKhusus(
-                AppPreference.getUser(this).nrp,
+        viewModel.postUpdateTugasKhusus(
+                idTugasKusus,
                 jenis,
                 isKonten ? "1" : lingkup,
                 isKonten ? "1" : peran,
                 binding.editTextJudul.getText().toString(),
                 tanggal
-        ).observe(this, new Observer<TugasKhususResponse>() {
+        ).observe(this, new Observer<BaseResponse>() {
             @Override
-            public void onChanged(TugasKhususResponse tugasKhususResponse) {
-                if (tugasKhususResponse != null) {
-                    if (tugasKhususResponse.status) {
+            public void onChanged(BaseResponse baseResponse) {
+                if (baseResponse != null) {
+                    if (baseResponse.status) {
                         if (isKonten) {
-                            postBuktiKonten(tugasKhususResponse.idTugasKhusus);
-                            postKonten(tugasKhususResponse.idTugasKhusus);
+                            postBuktiKonten();
+                            postUpdateKonten();
                         } else {
-                            postBuktiKegiatan(tugasKhususResponse.idTugasKhusus);
-                            postKegiatan(tugasKhususResponse.idTugasKhusus);
+                            postBuktiKegiatan();
+                            postUpdateKegiatan();
                         }
                     }
                 }
@@ -289,9 +435,9 @@ public class CatatActivity extends AppCompatActivity {
         });
     }
 
-    public void postKonten(String idTugasKhusus) {
-        viewModel.postKonten(
-                idTugasKhusus,
+    public void postUpdateKonten() {
+        viewModel.postUpdateKonten(
+                idTugasKusus,
                 mediaK,
                 jenisK
         ).observe(this, new Observer<BaseResponse>() {
@@ -309,9 +455,9 @@ public class CatatActivity extends AppCompatActivity {
         });
     }
 
-    public void postKegiatan(String idTugasKhusus) {
-        viewModel.postKegiatan(
-                idTugasKhusus,
+    public void postUpdateKegiatan() {
+        viewModel.postUpdateKegiatan(
+                idTugasKusus,
                 binding.editTextPenyelenggaraPembicara.getText().toString()
         ).observe(this, new Observer<BaseResponse>() {
             @Override
@@ -328,9 +474,9 @@ public class CatatActivity extends AppCompatActivity {
         });
     }
 
-    public void postBuktiKonten(String idTugasKhusus) {
+    public void postBuktiKonten() {
         viewModel.postBuktiKonten(
-                idTugasKhusus,
+                idTugasKusus,
                 binding.editTextLinkKonten.getText().toString()
         ).observe(this, new Observer<BaseResponse>() {
             @Override
@@ -344,9 +490,9 @@ public class CatatActivity extends AppCompatActivity {
         });
     }
 
-    public void postBuktiKegiatan(String idTugasKhusus) {
+    public void postBuktiKegiatan() {
         viewModel.postBuktiKegiatan(
-                idTugasKhusus,
+                idTugasKusus,
                 AppPreference.getUser(this).nrp,
                 jenis,
                 uri

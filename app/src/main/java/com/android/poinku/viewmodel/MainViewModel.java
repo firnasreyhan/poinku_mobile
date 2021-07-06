@@ -29,15 +29,14 @@ public class MainViewModel extends AndroidViewModel {
         );
     }
 
-    public MutableLiveData<DataPoinResponse> getDataPoin(String nrp, String jenis) {
-        return onlineRepository.getDataPoin(
-                nrp,
-                jenis
+    public MutableLiveData<TotalPoinResponse> getTotalPoin(String nrp) {
+        return onlineRepository.getTotalPoin(
+                nrp
         );
     }
 
-    public MutableLiveData<TotalPoinResponse> getTotalPoin(String nrp) {
-        return onlineRepository.getTotalPoin(
+    public MutableLiveData<BaseResponse> getIsValidasi(String nrp) {
+        return onlineRepository.getIsValidasi(
                 nrp
         );
     }

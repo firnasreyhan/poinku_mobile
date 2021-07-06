@@ -3,12 +3,14 @@ package com.android.poinku.view.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
 
     private int poin;
+    private boolean isValid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +68,41 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        getMahasiswa();
-        getTotalPoin();
+//        getMahasiswa();
+//        getTotalPoin();
+
+        binding.swiperRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getMahasiswa();
+                getTotalPoin();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.swiperRefreshLayout.setRefreshing(false);
+                    }
+                }, 3000);
+            }
+        });
 
         binding.materialCardViewCatat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(v.getContext(), CatatActivity.class));
+                if (!isValid) {
+                    startActivity(new Intent(v.getContext(), CatatActivity.class));
+                } else {
+                    new AlertDialog.Builder(v.getContext())
+                            .setTitle("Pesan")
+                            .setMessage("Anda tidak dapat mencatat kegiatan tugas khusus karena telah divalidasi")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create()
+                            .show();
+                }
             }
         });
 
@@ -100,9 +131,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 progressDialog.show();
-                putPengajuanTugasKhusus();
-                binding.materialButtonAjukanValidasi.setVisibility(View.GONE);
-                binding.textViewStatusValidasi.setText("Belum Divalidasi");
+                getIsValidasi();
             }
         });
 
@@ -112,6 +141,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(v.getContext(), ProfileActivity.class));
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getMahasiswa();
+        getTotalPoin();
     }
 
     public void getMahasiswa() {
@@ -130,7 +166,14 @@ public class MainActivity extends AppCompatActivity {
                         if (mahasiswaResponse.data.status != null) {
                             binding.materialButtonAjukanValidasi.setVisibility(View.GONE);
                             binding.textViewStatusValidasi.setText(mahasiswaResponse.data.status.equalsIgnoreCase("0") ? "Belum Divalidasi" : "Divalidasi");
+
+                            if (mahasiswaResponse.data.status.equalsIgnoreCase("1")) {
+                                isValid = true;
+                            } else if (mahasiswaResponse.data.status.equalsIgnoreCase("2")) {
+                                isValid = false;
+                            }
                         } else {
+                            binding.materialButtonAjukanValidasi.setVisibility(View.VISIBLE);
                             binding.textViewStatusValidasi.setText("Belum Diajukan");
                         }
                     }
@@ -151,17 +194,18 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (baseResponse != null) {
                     if (baseResponse.status) {
-                        new AlertDialog.Builder(MainActivity.this)
-                                .setTitle("Pesan")
-                                .setMessage(baseResponse.message)
-                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                })
-                                .create()
-                                .show();
+                        alert(baseResponse.message);
+//                        new AlertDialog.Builder(MainActivity.this)
+//                                .setTitle("Pesan")
+//                                .setMessage(baseResponse.message)
+//                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                                    @Override
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        dialog.dismiss();
+//                                    }
+//                                })
+//                                .create()
+//                                .show();
                     }
                 }
             }
@@ -268,5 +312,44 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void getIsValidasi() {
+        viewModel.getIsValidasi(
+                AppPreference.getUser(this).nrp
+        ).observe(this, new Observer<BaseResponse>() {
+            @Override
+            public void onChanged(BaseResponse baseResponse) {
+                if (baseResponse != null) {
+                    if (baseResponse.status) {
+                        putPengajuanTugasKhusus();
+                        binding.materialButtonAjukanValidasi.setVisibility(View.GONE);
+                        binding.textViewStatusValidasi.setText("Belum Divalidasi");
+                    } else {
+                        if (progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
+                        alert(baseResponse.message);
+                    }
+                } else {
+                    alert("Terjadi kesalahan pada server, silahkan coba lagi");
+                }
+            }
+        });
+    }
+
+    public void alert(String pesan) {
+        new AlertDialog.Builder(this)
+                .setTitle("Pesan")
+                .setMessage(pesan)
+                .setCancelable(false)
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create()
+                .show();
     }
 }

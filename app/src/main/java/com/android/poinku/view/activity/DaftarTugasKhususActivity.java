@@ -36,8 +36,6 @@ public class DaftarTugasKhususActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setHasFixedSize(true);
 
-        getJenisTugasKhusus();
-
         binding.swiperRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -71,6 +69,7 @@ public class DaftarTugasKhususActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         binding.shimmerFrameLayout.startShimmer();
+        getJenisTugasKhusus();
     }
 
     public void getJenisTugasKhusus() {

@@ -37,7 +37,7 @@ public class EventUserAdapter extends RecyclerView.Adapter<EventUserAdapter.View
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         Picasso.get()
                 .load(list.get(position).poster)
-                .placeholder(R.drawable.ic_logi_stiki)
+                .placeholder(R.drawable.no_image)
                 .into(holder.imageViewPoster);
         holder.textViewJudul.setText(list.get(position).judul);
         holder.textViewJenis.setText(list.get(position).jenis);

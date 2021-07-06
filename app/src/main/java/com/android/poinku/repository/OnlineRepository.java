@@ -60,9 +60,12 @@ public class OnlineRepository {
         return data;
     }
 
-    public MutableLiveData<LingkupResponse> getLingkup() {
+    public MutableLiveData<LingkupResponse> getLingkup(String idAturan, String idJenis) {
         MutableLiveData<LingkupResponse> data = new MutableLiveData<>();
-        apiInterface.getLingkup().enqueue(new Callback<LingkupResponse>() {
+        apiInterface.getLingkup(
+                idAturan,
+                idJenis
+        ).enqueue(new Callback<LingkupResponse>() {
             @Override
             public void onResponse(Call<LingkupResponse> call, Response<LingkupResponse> response) {
                 if (response.isSuccessful()) {
@@ -81,9 +84,13 @@ public class OnlineRepository {
         return data;
     }
 
-    public MutableLiveData<PeranResponse> getPeran() {
+    public MutableLiveData<PeranResponse> getPeran(String idAturan, String idJenis, String idLingkup) {
         MutableLiveData<PeranResponse> data = new MutableLiveData<>();
-        apiInterface.getPeran().enqueue(new Callback<PeranResponse>() {
+        apiInterface.getPeran(
+                idAturan,
+                idJenis,
+                idLingkup
+        ).enqueue(new Callback<PeranResponse>() {
             @Override
             public void onResponse(Call<PeranResponse> call, Response<PeranResponse> response) {
                 if (response.isSuccessful()) {
@@ -131,6 +138,35 @@ public class OnlineRepository {
         return data;
     }
 
+    public MutableLiveData<BaseResponse> postUpdateTugasKhusus(String idTugasKhusus, String jenis, String lingkup, String peran, String judul, String tanggal) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        apiInterface.postUpdateTugasKhusus(
+                idTugasKhusus,
+                jenis,
+                lingkup,
+                peran,
+                judul,
+                tanggal
+        ).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("postUpdateTugasKhusus", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
     public MutableLiveData<BaseResponse> postKonten(String idTugasKhusus, String media, String jenis) {
         MutableLiveData<BaseResponse> data = new MutableLiveData<>();
         apiInterface.postKonten(
@@ -157,6 +193,32 @@ public class OnlineRepository {
         return data;
     }
 
+    public MutableLiveData<BaseResponse> postUpdateKonten(String idTugasKhusus, String media, String jenis) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        apiInterface.postUpdateKonten(
+                idTugasKhusus,
+                media,
+                jenis
+        ).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("postUpdateKonten", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
     public MutableLiveData<BaseResponse> postKegiatan(String idTugasKhusus, String keterangan) {
         MutableLiveData<BaseResponse> data = new MutableLiveData<>();
         apiInterface.postKegiatan(
@@ -175,6 +237,31 @@ public class OnlineRepository {
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 Log.e("postKegiatan", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<BaseResponse> postUpdateKegiatan(String idTugasKhusus, String keterangan) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        apiInterface.postUpdateKegiatan(
+                idTugasKhusus,
+                keterangan
+        ).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("postUpdateKegiatan", t.getMessage());
                 data.postValue(null);
             }
         });
@@ -252,6 +339,54 @@ public class OnlineRepository {
             @Override
             public void onFailure(Call<DataPoinResponse> call, Throwable t) {
                 Log.e("getDataPoin", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<BaseResponse> getIsValidasi(String nrp) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        apiInterface.getIsValidasi(
+                nrp
+        ).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("getIsValidasi", t.getMessage());
+                data.postValue(null);
+            }
+        });
+
+        return data;
+    }
+
+    public MutableLiveData<BaseResponse> postDeleteTugasKhusus(String id) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        apiInterface.postDeleteTugasKhusus(
+                id
+        ).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.code() == 200) {
+                        data.postValue(response.body());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.e("deleteTugasKhusus", t.getMessage());
                 data.postValue(null);
             }
         });

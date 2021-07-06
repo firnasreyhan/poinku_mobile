@@ -1,9 +1,11 @@
 package com.android.poinku.adapter;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,20 @@ public class DaftarJenisTugasKhususAdapter extends RecyclerView.Adapter<DaftarJe
         holder.textViewLingkup.setText(list.get(position).lingkup);
         holder.textViewPeran.setText(list.get(position).peran);
         holder.textViewPoin.setText(list.get(position).poin == null ? "0" : list.get(position).poin);
+
+        if (list.get(position).statusValidasi.equalsIgnoreCase("0")) {
+            holder.imageViewStatus.setImageResource(R.drawable.ic_process);
+            holder.textViewStatus.setTextColor(Color.parseColor("#F8B500"));
+            holder.textViewStatus.setText("Sedang Diproses");
+        } else if (list.get(position).statusValidasi.equalsIgnoreCase("1")) {
+            holder.imageViewStatus.setImageResource(R.drawable.ic_approve);
+            holder.textViewStatus.setTextColor(Color.parseColor("#149654"));
+            holder.textViewStatus.setText("Disetujui");
+        } else if (list.get(position).statusValidasi.equalsIgnoreCase("2")) {
+            holder.imageViewStatus.setImageResource(R.drawable.ic_reject);
+            holder.textViewStatus.setTextColor(Color.parseColor("#F06641"));
+            holder.textViewStatus.setText("Ditolak");
+        }
     }
 
     @Override
@@ -53,7 +69,8 @@ public class DaftarJenisTugasKhususAdapter extends RecyclerView.Adapter<DaftarJe
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textViewJudul, textViewLingkup, textViewPeran, textViewPoin;
+        private final TextView textViewJudul, textViewLingkup, textViewPeran, textViewPoin, textViewStatus;
+        private final ImageView imageViewStatus;
         private final MaterialButton materialButtonDetail;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -62,6 +79,8 @@ public class DaftarJenisTugasKhususAdapter extends RecyclerView.Adapter<DaftarJe
             textViewLingkup = itemView.findViewById(R.id.textViewLingkup);
             textViewPeran = itemView.findViewById(R.id.textViewPeran);
             textViewPoin = itemView.findViewById(R.id.textViewPoin);
+            textViewStatus = itemView.findViewById(R.id.textViewStatus);
+            imageViewStatus = itemView.findViewById(R.id.imageViewStatus);
             materialButtonDetail = itemView.findViewById(R.id.materialButtonDetail);
 
             itemView.setOnClickListener(new View.OnClickListener() {

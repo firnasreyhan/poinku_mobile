@@ -33,7 +33,7 @@ public class EventUserFragment extends Fragment {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerView.setHasFixedSize(true);
 
-        getEvent();
+//        getEvent();
 
         binding.swiperRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -70,6 +70,7 @@ public class EventUserFragment extends Fragment {
     public void onResume() {
         super.onResume();
         binding.shimmerFrameLayout.startShimmer();
+        getEvent();
     }
 
     public void getEvent() {

@@ -142,7 +142,6 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/open_sans_semi_bold"
                     android:text="-"
-                    android:textColor="@color/primary"
                     android:textSize="@dimen/_8sdp" />
 
                 <com.google.android.material.button.MaterialButton

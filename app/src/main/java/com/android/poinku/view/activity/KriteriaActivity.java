@@ -21,7 +21,7 @@ public class KriteriaActivity extends AppCompatActivity {
     private ActivityKriteriaBinding binding;
     private KriteriaViewModel viewModel;
 
-    private String nilai, poinMinimal;
+    private String idNilai, nilai, poinMinimal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +29,7 @@ public class KriteriaActivity extends AppCompatActivity {
         binding = ActivityKriteriaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        idNilai = getIntent().getStringExtra("ID_NILAI");
         nilai = getIntent().getStringExtra("NILAI");
         poinMinimal = getIntent().getStringExtra("POIN_MINIMAL");
 
@@ -85,7 +86,7 @@ public class KriteriaActivity extends AppCompatActivity {
     public void getKriteria() {
         binding.shimmerFrameLayout.startShimmer();
         viewModel.getKriteria(
-                AppPreference.getUser(this).idAturan
+                idNilai
         ).observe(this, new Observer<KriteriaResponse>() {
             @Override
             public void onChanged(KriteriaResponse kriteriaResponse) {
