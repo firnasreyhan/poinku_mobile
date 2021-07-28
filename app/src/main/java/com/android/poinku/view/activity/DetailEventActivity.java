@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
@@ -58,6 +60,20 @@ public class DetailEventActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Mohon tunggu sebentar...");
         progressDialog.setCancelable(false);
+
+        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDetailEvent();
+                getPresesni();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 3000);
+            }
+        });
 
         binding.materialButtonDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,6 +294,8 @@ public class DetailEventActivity extends AppCompatActivity {
                         binding.textViewJam.setText(event.jamMulai.substring(0, 5) + " - " + event.jamSelesai.substring(0, 5) + " WIB");
                         binding.textViewJenis.setText(event.jenis);
                         binding.textViewLingkup.setText(event.lingkup);
+                        binding.textViewPembicara.setText(event.pembicara);
+                        binding.textViewLokasi.setText(event.lokasi);
                         binding.textViewPendaftar.setText("Pendaftar " + event.pendaftar + " Orang");
                         binding.textViewKuota.setText("Kuota " + event.kuota + " Orang");
                         binding.textViewDeskripsi.setText(event.deskripsi);

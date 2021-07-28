@@ -33,6 +33,12 @@ public class EventResponse extends BaseResponse {
         @SerializedName("DESKRIPSI")
         public String deskripsi;
 
+        @SerializedName("PEMBICARA")
+        public String pembicara;
+
+        @SerializedName("LOKASI")
+        public String lokasi;
+
         @SerializedName("TANGGAL_ACARA")
         public String tanggalAcara;
 

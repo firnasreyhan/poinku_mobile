@@ -18,6 +18,7 @@ import com.android.poinku.api.response.JenisResponse;
 import com.android.poinku.api.response.KegiatanResponse;
 import com.android.poinku.api.response.KontenResponse;
 import com.android.poinku.api.response.LingkupResponse;
+import com.android.poinku.api.response.MahasiswaResponse;
 import com.android.poinku.api.response.PeranResponse;
 import com.android.poinku.api.response.TugasKhususResponse;
 import com.android.poinku.repository.OnlineRepository;
@@ -44,6 +45,12 @@ public class UpdateTugasKhususViewModel extends AndroidViewModel {
         context = application.getApplicationContext();
     }
 
+    public MutableLiveData<MahasiswaResponse> getMahasiswa(String nrp) {
+        return onlineRepository.getMahasiswa(
+                nrp
+        );
+    }
+
     public MutableLiveData<DetailTugasKhususResponse> getDetailTugasKhusus(String idTugasKhusus) {
         return onlineRepository.getDetailTugasKhusus(
                 idTugasKhusus
@@ -62,8 +69,10 @@ public class UpdateTugasKhususViewModel extends AndroidViewModel {
         );
     }
 
-    public MutableLiveData<JenisResponse> getJenis() {
-        return onlineRepository.getJenis();
+    public MutableLiveData<JenisResponse> getJenis(String idAturan) {
+        return onlineRepository.getJenis(
+                idAturan
+        );
     }
 
     public MutableLiveData<LingkupResponse> getLingkup(String idAturan, String idJenis) {

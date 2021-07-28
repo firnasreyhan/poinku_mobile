@@ -15,6 +15,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.android.poinku.api.response.BaseResponse;
 import com.android.poinku.api.response.JenisResponse;
 import com.android.poinku.api.response.LingkupResponse;
+import com.android.poinku.api.response.MahasiswaResponse;
 import com.android.poinku.api.response.PeranResponse;
 import com.android.poinku.api.response.TugasKhususResponse;
 import com.android.poinku.repository.OnlineRepository;
@@ -39,8 +40,16 @@ public class CatatViewModel extends AndroidViewModel {
         context = application.getApplicationContext();
     }
 
-    public MutableLiveData<JenisResponse> getJenis() {
-        return onlineRepository.getJenis();
+    public MutableLiveData<MahasiswaResponse> getMahasiswa(String nrp) {
+        return onlineRepository.getMahasiswa(
+                nrp
+        );
+    }
+
+    public MutableLiveData<JenisResponse> getJenis(String idAturan) {
+        return onlineRepository.getJenis(
+                idAturan
+        );
     }
 
     public MutableLiveData<LingkupResponse> getLingkup(String idAturan, String idJenis) {

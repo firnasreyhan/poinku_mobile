@@ -34,8 +34,10 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiInterface {
-    @GET("Jenis")
-    Call<JenisResponse> getJenis();
+    @GET("Jenis/data")
+    Call<JenisResponse> getJenis(
+            @Query("idAturan") String idAturan
+    );
 
     @GET("Lingkup/data")
     Call<LingkupResponse> getLingkup(

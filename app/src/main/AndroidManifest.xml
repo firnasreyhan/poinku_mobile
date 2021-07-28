@@ -6,31 +6,63 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_new_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_new_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Poinku"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.UpdateTugasKhususActivity"></activity>
-        <activity android:name=".view.activity.KuesionerActivity" />
-        <activity android:name=".view.activity.SertifikatActivity" />
-        <activity android:name=".view.activity.ProfileActivity" />
-        <activity android:name=".view.activity.StatusAbsenActivity" />
-        <activity android:name=".view.activity.DetailEventActivity" />
-        <activity android:name=".view.activity.DaftarEventActivity" />
-        <activity android:name=".view.activity.KriteriaActivity" />
-        <activity android:name=".view.activity.InformasiActivity" />
-        <activity android:name=".view.activity.DetailTugasKhususActivity" />
-        <activity android:name=".view.activity.DaftarJenisTugasKhususActivity" />
-        <activity android:name=".view.activity.DaftarTugasKhususActivity" />
-        <activity android:name=".view.activity.CatatActivity" />
-        <activity android:name=".view.activity.MainActivity" />
-        <activity android:name=".view.activity.SplashScreenActivity">
+        <activity
+            android:name=".view.activity.UpdateTugasKhususActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.KuesionerActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.SertifikatActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.ProfileActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.StatusAbsenActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.DetailEventActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.DaftarEventActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.KriteriaActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.InformasiActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.DetailTugasKhususActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.DaftarJenisTugasKhususActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.DaftarTugasKhususActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.CatatActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.MainActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.SplashScreenActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -57,7 +89,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_launcher_foreground" />
+            android:resource="@drawable/ic_notification_poinku" />
     </application>
 
 </manifest>

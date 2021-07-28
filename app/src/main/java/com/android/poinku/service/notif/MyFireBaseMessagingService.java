@@ -38,8 +38,8 @@ public class MyFireBaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
         String channelId = String.valueOf(new Random().nextInt(3000));
         NotificationCompat.Builder builder = new  NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_foreground))
+                .setSmallIcon(R.drawable.ic_notification_poinku)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification_poinku))
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .setLights(Color.WHITE, 3000, 3000)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))

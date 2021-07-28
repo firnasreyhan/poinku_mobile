@@ -39,9 +39,11 @@ public class OnlineRepository {
         this.apiInterface = ApiClient.getClient();
     }
 
-    public MutableLiveData<JenisResponse> getJenis() {
+    public MutableLiveData<JenisResponse> getJenis(String idAturan) {
         MutableLiveData<JenisResponse> data = new MutableLiveData<>();
-        apiInterface.getJenis().enqueue(new Callback<JenisResponse>() {
+        apiInterface.getJenis(
+                idAturan
+        ).enqueue(new Callback<JenisResponse>() {
             @Override
             public void onResponse(Call<JenisResponse> call, Response<JenisResponse> response) {
                 if (response.isSuccessful()) {

@@ -71,15 +71,23 @@ public class MainActivity extends AppCompatActivity {
 //        getMahasiswa();
 //        getTotalPoin();
 
-        binding.swiperRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                binding.textViewAturan.setText("-");
+                binding.textViewStatusValidasi.setText("-");
+                binding.textViewTanggalValidasi.setText("-");
+                binding.textViewTotalPoin.setText("0 Poin");
+                binding.linearProgressIndicatorPoin.setProgress(0);
+                binding.textViewNilai.setText("E");
+                binding.materialButtonAjukanValidasi.setVisibility(View.GONE);
+
                 getMahasiswa();
                 getTotalPoin();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        binding.swiperRefreshLayout.setRefreshing(false);
+                        binding.swipeRefreshLayout.setRefreshing(false);
                     }
                 }, 3000);
             }
@@ -93,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     new AlertDialog.Builder(v.getContext())
                             .setTitle("Pesan")
-                            .setMessage("Anda tidak dapat mencatat kegiatan tugas khusus karena telah divalidasi")
+                            .setMessage("Anda tidak dapat mencatat kegiatan tugas khusus karena telah divalidasi atau sedang dalam proses validasi")
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -130,8 +138,23 @@ public class MainActivity extends AppCompatActivity {
         binding.materialButtonAjukanValidasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog.show();
-                getIsValidasi();
+                if (binding.textViewNilai.getText().toString().equalsIgnoreCase("E")) {
+                    new AlertDialog.Builder(v.getContext())
+                            .setTitle("Pesan")
+                            .setMessage("Anda tidak dapat mengajukan validasi tugas khusus dikarenakan nilai yang anda dapatkan tidak mencukupi")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .create()
+                            .show();
+                } else {
+                    progressDialog.show();
+                    getIsValidasi();
+                    isValid = true;
+                }
             }
         });
 
@@ -161,20 +184,34 @@ public class MainActivity extends AppCompatActivity {
                         binding.textViewAturan.setText(mahasiswaResponse.data.tahun + " / " + mahasiswaResponse.data.keterangan);
                         binding.textViewTanggalValidasi.setText(mahasiswaResponse.data.tanggalValidasi != null ? mahasiswaResponse.data.tanggalValidasi : "-");
 
-                        getNilai(mahasiswaResponse.data.idAturan);
+                        if (mahasiswaResponse.data.status != null) {
+                            if (mahasiswaResponse.data.status.equalsIgnoreCase("1")) {
+                                binding.textViewNilai.setText(mahasiswaResponse.data.nilai);
+                            } else {
+                                getNilai(mahasiswaResponse.data.idAturan);
+                            }
+                        } else {
+                            getNilai(mahasiswaResponse.data.idAturan);
+                        }
 
                         if (mahasiswaResponse.data.status != null) {
-                            binding.materialButtonAjukanValidasi.setVisibility(View.GONE);
-                            binding.textViewStatusValidasi.setText(mahasiswaResponse.data.status.equalsIgnoreCase("0") ? "Belum Divalidasi" : "Divalidasi");
-
                             if (mahasiswaResponse.data.status.equalsIgnoreCase("1")) {
+                                binding.textViewStatusValidasi.setText("Divalidasi");
+                                binding.materialButtonAjukanValidasi.setVisibility(View.GONE);
                                 isValid = true;
                             } else if (mahasiswaResponse.data.status.equalsIgnoreCase("2")) {
+                                binding.textViewStatusValidasi.setText("Ditolak");
+                                binding.materialButtonAjukanValidasi.setVisibility(View.VISIBLE);
                                 isValid = false;
+                            } else if (mahasiswaResponse.data.status.equalsIgnoreCase("0")) {
+                                binding.textViewStatusValidasi.setText("Diproses");
+                                binding.materialButtonAjukanValidasi.setVisibility(View.GONE);
+                                isValid = true;
                             }
                         } else {
                             binding.materialButtonAjukanValidasi.setVisibility(View.VISIBLE);
                             binding.textViewStatusValidasi.setText("Belum Diajukan");
+                            isValid = false;
                         }
                     }
                 }
@@ -266,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(KriteriaResponse kriteriaResponse) {
                 if (kriteriaResponse != null) {
                     if (kriteriaResponse.status) {
-                        getKriteriaTugasKhusus(list, index,AppPreference.getUser(MainActivity.this).nrp, kriteriaResponse);
+                        getKriteriaTugasKhusus(list, index, AppPreference.getUser(MainActivity.this).nrp, kriteriaResponse);
                     }
                 }
             }
@@ -324,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
                     if (baseResponse.status) {
                         putPengajuanTugasKhusus();
                         binding.materialButtonAjukanValidasi.setVisibility(View.GONE);
-                        binding.textViewStatusValidasi.setText("Belum Divalidasi");
+                        binding.textViewStatusValidasi.setText("Diproses");
                     } else {
                         if (progressDialog.isShowing()) {
                             progressDialog.dismiss();

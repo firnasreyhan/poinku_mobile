@@ -24,6 +24,7 @@ import com.android.poinku.R;
 import com.android.poinku.api.response.BaseResponse;
 import com.android.poinku.api.response.JenisResponse;
 import com.android.poinku.api.response.LingkupResponse;
+import com.android.poinku.api.response.MahasiswaResponse;
 import com.android.poinku.api.response.PeranResponse;
 import com.android.poinku.api.response.TugasKhususResponse;
 import com.android.poinku.databinding.ActivityCatatBinding;
@@ -40,7 +41,7 @@ public class CatatActivity extends AppCompatActivity {
     private CatatViewModel viewModel;
     private ProgressDialog progressDialog;
 
-    private String tanggal, jenis, namaJenis, peran, lingkup, mediaK, jenisK;
+    private String tanggal, jenis, peran, lingkup, mediaK, jenisK;
     private boolean isKonten;
     private Uri uri;
 
@@ -60,7 +61,8 @@ public class CatatActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        getJenis();
+        getMahasiwa();
+//        getJenis();
 //        getLingkup();
 //        getPeran();
         setKonten();
@@ -125,8 +127,25 @@ public class CatatActivity extends AppCompatActivity {
         }
     }
 
-    public void getJenis() {
-        viewModel.getJenis().observe(this, new Observer<JenisResponse>() {
+    public void getMahasiwa() {
+        viewModel.getMahasiswa(
+                AppPreference.getUser(this).nrp
+        ).observe(this, new Observer<MahasiswaResponse>() {
+            @Override
+            public void onChanged(MahasiswaResponse mahasiswaResponse) {
+                if (mahasiswaResponse != null) {
+                    if (mahasiswaResponse.status) {
+                        getJenis(mahasiswaResponse.data.idAturan);
+                    }
+                }
+            }
+        });
+    }
+
+    public void getJenis(String idAturan) {
+        viewModel.getJenis(
+                idAturan
+        ).observe(this, new Observer<JenisResponse>() {
             @Override
             public void onChanged(JenisResponse jenisResponse) {
                 if (jenisResponse != null) {
@@ -148,11 +167,10 @@ public class CatatActivity extends AppCompatActivity {
 
                                     isKonten = false;
 
-                                    getLingkup(jenisResponse.data.get(position).idJenis);
+                                    getLingkup(idAturan, jenisResponse.data.get(position).idJenis);
                                 }
 
                                 jenis = jenisResponse.data.get(position).idJenis;
-                                namaJenis = jenisResponse.data.get(position).jenis;
                             }
 
                             @Override
@@ -166,9 +184,9 @@ public class CatatActivity extends AppCompatActivity {
         });
     }
 
-    public void getLingkup(String idJenis) {
+    public void getLingkup(String idAturan, String idJenis) {
         viewModel.getLingkup(
-                AppPreference.getUser(this).idAturan,
+                idAturan,
                 idJenis
         ).observe(this, new Observer<LingkupResponse>() {
             @Override
@@ -183,7 +201,7 @@ public class CatatActivity extends AppCompatActivity {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 lingkup = lingkupResponse.data.get(position).idLingkup;
 
-                                getPeran(idJenis, lingkupResponse.data.get(position).idLingkup);
+                                getPeran(idAturan, idJenis, lingkupResponse.data.get(position).idLingkup);
                             }
 
                             @Override
@@ -197,9 +215,9 @@ public class CatatActivity extends AppCompatActivity {
         });
     }
 
-    public void getPeran(String idJenis, String idLingkup) {
+    public void getPeran(String idAturan, String idJenis, String idLingkup) {
         viewModel.getPeran(
-                AppPreference.getUser(this).idAturan,
+                idAturan,
                 idJenis,
                 idLingkup
         ).observe(this, new Observer<PeranResponse>() {
@@ -383,6 +401,7 @@ public class CatatActivity extends AppCompatActivity {
         boolean check3 = true;
         boolean check4 = true;
         boolean check5 = true;
+        boolean check6 = true;
 
         if (binding.editTextJudul.getText().toString().isEmpty()) {
             binding.editTextJudul.setError("Mohon isi data berikut");
@@ -394,13 +413,18 @@ public class CatatActivity extends AppCompatActivity {
             check2 = false;
         }
 
+        if (binding.editTextTanggalKegiatan.getText().toString().isEmpty()) {
+            binding.editTextTanggalKegiatan.setError("Mohon isi data berikut");
+            check6 = false;
+        }
+
         if (isKonten) {
             if (binding.editTextLinkKonten.getText().toString().isEmpty()) {
                 binding.editTextLinkKonten.setError("Mohon isi data berikut");
                 check3 = false;
             }
 
-            return check1 && check2 && check3;
+            return check1 && check2 && check3 && check6;
         } else {
             if (binding.editTextPenyelenggaraPembicara.getText().toString().isEmpty()) {
                 binding.editTextPenyelenggaraPembicara.setError("Mohon isi data berikut");
@@ -412,7 +436,7 @@ public class CatatActivity extends AppCompatActivity {
                 check5 = false;
             }
 
-            return check1 && check2 && check4 && check5;
+            return check1 && check2 && check4 && check5 && check6;
         }
     }
 }

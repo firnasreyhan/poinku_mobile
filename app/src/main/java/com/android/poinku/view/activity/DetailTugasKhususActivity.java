@@ -111,7 +111,7 @@ public class DetailTugasKhususActivity extends AppCompatActivity {
                 if (mahasiswaResponse != null) {
                     if (mahasiswaResponse.status) {
                         if (mahasiswaResponse.data.status != null) {
-                            if (mahasiswaResponse.data.status.equalsIgnoreCase("1")) {
+                            if (mahasiswaResponse.data.status.equalsIgnoreCase("0") || mahasiswaResponse.data.status.equalsIgnoreCase("1")) {
                                 binding.materialButtonUbahKegiatan.setVisibility(View.GONE);
                                 binding.materialButtonHapusKegiatan.setVisibility(View.GONE);
                             }

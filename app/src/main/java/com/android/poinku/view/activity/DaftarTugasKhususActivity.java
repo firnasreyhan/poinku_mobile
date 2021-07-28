@@ -36,7 +36,7 @@ public class DaftarTugasKhususActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setHasFixedSize(true);
 
-        binding.swiperRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 binding.shimmerFrameLayout.setVisibility(View.VISIBLE);
@@ -46,7 +46,7 @@ public class DaftarTugasKhususActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        binding.swiperRefreshLayout.setRefreshing(false);
+                        binding.swipeRefreshLayout.setRefreshing(false);
                     }
                 }, 3000);
             }

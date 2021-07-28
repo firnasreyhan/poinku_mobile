@@ -10,7 +10,7 @@
     tools:context=".view.activity.MainActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swiperRefreshLayout"
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -536,6 +536,7 @@
                     </com.google.android.material.card.MaterialCardView>
 
                     <com.google.android.material.button.MaterialButton
+                        android:visibility="gone"
                         android:id="@+id/materialButtonAjukanValidasi"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

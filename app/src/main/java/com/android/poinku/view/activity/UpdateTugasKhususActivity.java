@@ -27,6 +27,7 @@ import com.android.poinku.api.response.JenisResponse;
 import com.android.poinku.api.response.KegiatanResponse;
 import com.android.poinku.api.response.KontenResponse;
 import com.android.poinku.api.response.LingkupResponse;
+import com.android.poinku.api.response.MahasiswaResponse;
 import com.android.poinku.api.response.PeranResponse;
 import com.android.poinku.api.response.TugasKhususResponse;
 import com.android.poinku.databinding.ActivityUpdateTugasKhususBinding;
@@ -75,7 +76,8 @@ public class UpdateTugasKhususActivity extends AppCompatActivity {
 //        getLingkup();
 //        getPeran();
 
-        getDetailTugasKhusus();
+//        getDetailTugasKhusus();
+        getMahasiwa();
         setKonten("Blog", "Artikel");
 
         Calendar calendar = Calendar.getInstance();
@@ -149,7 +151,23 @@ public class UpdateTugasKhususActivity extends AppCompatActivity {
         }
     }
 
-    public void getDetailTugasKhusus() {
+    public void getMahasiwa() {
+        viewModel.getMahasiswa(
+                AppPreference.getUser(this).nrp
+        ).observe(this, new Observer<MahasiswaResponse>() {
+            @Override
+            public void onChanged(MahasiswaResponse mahasiswaResponse) {
+                if (mahasiswaResponse != null) {
+                    if (mahasiswaResponse.status) {
+//                        getJenis(mahasiswaResponse.data.idAturan, mahasiswaResponse.data.idAturan);
+                        getDetailTugasKhusus(mahasiswaResponse.data.idAturan);
+                    }
+                }
+            }
+        });
+    }
+
+    public void getDetailTugasKhusus(String idAturan) {
         viewModel.getDetailTugasKhusus(
                 idTugasKusus
         ).observe(this, new Observer<DetailTugasKhususResponse>() {
@@ -170,15 +188,15 @@ public class UpdateTugasKhususActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        getJenis(detailTugasKhususResponse.data.idJenis);
+                        getJenis(idAturan, detailTugasKhususResponse.data.idJenis);
 //                        binding.editTextJenis.setText(detailTugasKhususResponse.data.jenis);
 
                         if (!detailTugasKhususResponse.data.idJenis.equalsIgnoreCase("14")) {
                             binding.linearLayoutBukanKonten.setVisibility(View.VISIBLE);
                             binding.linearLayoutKonten.setVisibility(View.GONE);
 
-                            getLingkup(detailTugasKhususResponse.data.idJenis, detailTugasKhususResponse.data.idLingkup);
-                            getPeran(detailTugasKhususResponse.data.idJenis, detailTugasKhususResponse.data.idLingkup, detailTugasKhususResponse.data.idPeran);
+                            getLingkup(idAturan, detailTugasKhususResponse.data.idJenis, detailTugasKhususResponse.data.idLingkup);
+                            getPeran(idAturan, detailTugasKhususResponse.data.idJenis, detailTugasKhususResponse.data.idLingkup, detailTugasKhususResponse.data.idPeran);
 //                            binding.editTextLingkup.setText(detailTugasKhususResponse.data.lingkup);
 //                            binding.editTextPeran.setText(detailTugasKhususResponse.data.peran);
 
@@ -235,8 +253,10 @@ public class UpdateTugasKhususActivity extends AppCompatActivity {
         });
     }
 
-    public void getJenis(String idJenis) {
-        viewModel.getJenis().observe(this, new Observer<JenisResponse>() {
+    public void getJenis(String idAturan, String idJenis) {
+        viewModel.getJenis(
+                idAturan
+        ).observe(this, new Observer<JenisResponse>() {
             @Override
             public void onChanged(JenisResponse jenisResponse) {
                 if (jenisResponse != null) {
@@ -258,7 +278,7 @@ public class UpdateTugasKhususActivity extends AppCompatActivity {
 
                                     isKonten = false;
 
-                                    getLingkup(jenisResponse.data.get(position).idJenis, idLingkup);
+                                    getLingkup(idAturan, jenisResponse.data.get(position).idJenis, idLingkup);
                                 }
 
                                 jenis = jenisResponse.data.get(position).idJenis;
@@ -286,9 +306,9 @@ public class UpdateTugasKhususActivity extends AppCompatActivity {
         });
     }
 
-    public void getLingkup(String idJenis, String idLingkup) {
+    public void getLingkup(String idAturan, String idJenis, String idLingkup) {
         viewModel.getLingkup(
-                AppPreference.getUser(this).idAturan,
+                idAturan,
                 idJenis
         ).observe(this, new Observer<LingkupResponse>() {
             @Override
@@ -310,7 +330,7 @@ public class UpdateTugasKhususActivity extends AppCompatActivity {
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 lingkup = lingkupResponse.data.get(position).idLingkup;
 
-                                getPeran(idJenis, idLingkup, idPeran);
+                                getPeran(idAturan, idJenis, idLingkup, idPeran);
                             }
 
                             @Override
@@ -324,9 +344,9 @@ public class UpdateTugasKhususActivity extends AppCompatActivity {
         });
     }
 
-    public void getPeran(String idJenis, String idLingkup, String idPeran) {
+    public void getPeran(String idAturan, String idJenis, String idLingkup, String idPeran) {
         viewModel.getPeran(
-                AppPreference.getUser(this).idAturan,
+                idAturan,
                 idJenis,
                 idLingkup
         ).observe(this, new Observer<PeranResponse>() {
@@ -426,7 +446,9 @@ public class UpdateTugasKhususActivity extends AppCompatActivity {
                             postBuktiKonten();
                             postUpdateKonten();
                         } else {
-                            postBuktiKegiatan();
+                            if (uri != null) {
+                                postBuktiKegiatan();
+                            }
                             postUpdateKegiatan();
                         }
                     }
@@ -553,10 +575,10 @@ public class UpdateTugasKhususActivity extends AppCompatActivity {
                 check4 = false;
             }
 
-            if (uri == null) {
-                Toast.makeText(this, "Mohon upload bukti kegiatan", Toast.LENGTH_SHORT).show();
-                check5 = false;
-            }
+//            if (uri == null) {
+//                Toast.makeText(this, "Mohon upload bukti kegiatan", Toast.LENGTH_SHORT).show();
+//                check5 = false;
+//            }
 
             return check1 && check2 && check4 && check5;
         }
